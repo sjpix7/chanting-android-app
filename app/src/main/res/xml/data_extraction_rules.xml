@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Android's own device backup / phone-to-phone transfer keeps your japa history when you change phones.
+     This is an OS feature controlled by the user; the app itself never uploads anything. -->
+<data-extraction-rules>
+    <cloud-backup />
+    <device-transfer />
+</data-extraction-rules>

@@ -1,0 +1,28 @@
+*.iml
+.gradle/
+/local.properties
+/.idea/
+.DS_Store
+/build/
+/app/build/
+/captures/
+.externalNativeBuild/
+.cxx/
+.kotlin/
+# Release signing secrets — NEVER commit these
+keystore.properties
+*.jks
+*.keystore
+
+# Build outputs copied outside build/
+*.apk
+*.aab
+
+# Editors
+.vscode/
+*.swp
+
+# Python (tools/)
+__pycache__/
+*.pyc
+.venv/
