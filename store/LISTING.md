@@ -18,7 +18,7 @@ Sources: `src/icon.svg`, `src/feature-graphic.svg`; regenerate with `tools/asset
 
 - **App category:** Lifestyle  *(alternative: Health & Fitness — Lifestyle is the better fit for a devotional app)*
 - **Tags (pick up to 5 in Play Console):** Meditation, Spirituality, Religion, Habit tracker, Counter
-- **Contact email:** *your support email* (required, shown publicly)
+- **Contact email:** deeplearn39@gmail.com (required, shown publicly)
 - **Privacy policy URL:** the URL where you host `docs/privacy-policy.html` (see the launch guide, step 5)
 
 ---
