@@ -127,3 +127,30 @@ class HistoryPruningTest {
         assertEquals(today.minusDays(400), StatsCalculator.compute(records, today).firstDay)
     }
 }
+
+class MantraTotalsTest {
+    private fun rec(key: String, label: String, at: Long) =
+        JapaRecord(mantraKey = key, mantraLabel = label, startedAt = 0, completedAt = at, dayKey = 20261105)
+
+    @Test fun groupsByMantraMostChantedFirst() {
+        // Newest first, as the DAO returns them.
+        val records = listOf(
+            rec("om", "Om", 50),
+            rec("custom:3", "My mantra (renamed)", 40),
+            rec("om_namah_shivaya", "Shiva", 30),
+            rec("custom:3", "My mantra", 20),
+            rec("custom:3", "My mantra", 10),
+        )
+        val totals = StatsCalculator.mantraTotals(records)
+        assertEquals(listOf("custom:3", "om", "om_namah_shivaya"), totals.map { it.mantraKey })
+        assertEquals(3, totals[0].malas)
+        assertEquals(324L, totals[0].japa)
+        assertEquals("My mantra (renamed)", totals[0].label)
+        // Ties are broken by the most recently chanted.
+        assertEquals(50L, totals[1].lastCompletedAt)
+    }
+
+    @Test fun emptyHistoryHasNoTotals() {
+        assertTrue(StatsCalculator.mantraTotals(emptyList()).isEmpty())
+    }
+}

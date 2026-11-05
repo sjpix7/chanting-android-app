@@ -11,7 +11,7 @@ This guide takes you from this repository to a live Play Store listing. Requirem
 | 512 px icon, 1024×500 feature graphic, 7 phone screenshots | `store/` |
 | Title, short and full description (9 languages) | `store/LISTING.md` |
 | Privacy policy page | `docs/privacy-policy.html` |
-| No internet permission, no ads, no analytics. Permissions: `VIBRATE`, plus the optional floating-bead ones (`SYSTEM_ALERT_WINDOW`, foreground service "special use", notifications) | `app/src/main/AndroidManifest.xml` |
+| No internet permission, no ads, no analytics. Permissions: `VIBRATE`, the optional floating-bead ones (`SYSTEM_ALERT_WINDOW`, foreground service "special use", notifications), and the optional voice-sample ones (`RECORD_AUDIO`, foreground service "media playback", `WAKE_LOCK`) | `app/src/main/AndroidManifest.xml` |
 | All 9 languages delivered to every phone (Play's language splitting is turned off so the flag menu always works) | `app/build.gradle.kts` → `bundle { language { enableSplit = false } }` |
 
 **Time and cost:** $25 one-time registration fee. Expect **3–4 weeks** in total if you open a *personal* account: identity check, then a mandatory 14-day closed test, then production review.
@@ -96,12 +96,18 @@ Answer each section like this:
 | **d. Content rating** | Start the questionnaire. Category: *All other app types* (or *Reference, news or educational*). Answer **No** to violence, sexuality, language, drugs, gambling, user interaction/sharing, location sharing and purchases. Expect a rating of *Everyone* / *PEGI 3* / *IARC 3+*. |
 | **e. Target audience and content** | Choose **13–15, 16–17 and 18+**. Leave out the under-13 groups unless you want to opt into the stricter *Families* programme. Answer "Could your store listing unintentionally appeal to children?" with *No*. |
 | **f. News app** | No |
-| **g. Data safety** | "Does your app collect or share any of the required user data types?" → **No**. Everything stays on the device and the app has no internet permission. Then review and **Submit**. The privacy policy URL goes here as well. |
+| **g. Data safety** | "Does your app collect or share any of the required user data types?" → **No**. Everything stays on the device and the app has no internet permission. Voice recordings also count as not collected: Google's definition of "collected" is data sent off the device, and recordings are only processed and stored on the phone. Then review and **Submit**. The privacy policy URL goes here as well. |
 | **h. Advertising ID** | **No**, the app does not use an advertising ID |
 | **i. Government apps** | No |
 | **j. Financial features** | My app doesn't provide any financial features |
 | **k. Health apps** | My app does not have any health features. It is a devotional counter, not a medical app. |
-| **l. Foreground service permissions** | Appears because the floating bead uses a foreground service of type **Special use**. Tick *Special use* and paste the description below. Play also asks for a **short video**: record your phone screen (Quick Settings → *Screen record*) showing Settings → *Keep over other apps* → leaving the app → tapping the bead over the home screen → *Turn off* in the notification. Upload it to YouTube as **Unlisted** and paste the link. |
+| **l. Foreground service permissions** | Appears because the app uses two foreground service types. Tick **Media playback** (voice samples keep playing and counting with the screen off) and **Special use** (the floating bead), and paste the descriptions below. Play also asks for a **short video**: record your phone screen (Quick Settings → *Screen record*) showing Settings → *Keep over other apps* → leaving the app → tapping the bead over the home screen → *Turn off* in the notification. Upload it to YouTube as **Unlisted** and paste the link. |
+
+**Text for the foreground-service declaration (Media playback):**
+```
+Voice sample playback. The user can record or choose an audio file of a mantra and play it on repeat; the app counts each complete play (108 plays = one mala). The media playback foreground service keeps the audio playing and counting when the screen is off or the user switches apps, which is the core purpose of the feature. It starts only when the user presses Play, shows a notification with the count plus Pause and Stop, and ends as soon as playback is stopped.
+```
+For the video, show: Japa screen → *Add a voice sample* → record → Play → lock the phone (audio keeps playing, notification shows the count) → *Stop* in the notification.
 
 **Text for the foreground-service declaration (Special use):**
 ```

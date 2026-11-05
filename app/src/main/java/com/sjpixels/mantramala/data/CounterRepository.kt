@@ -11,6 +11,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+/** Name snapshot stored with each mala, so history reads correctly even after a custom mantra is deleted. */
+suspend fun resolveMantraLabel(key: String, customDao: CustomMantraDao): String =
+    Mantras.customId(key)?.let { customDao.getById(it)?.name }
+        ?: Mantras.builtIn(key)?.transliteration
+        ?: key
+
 /**
  * The one app-wide japa counter. The counter screen, the in-app floating bead and the
  * over-other-apps bead (FloatingCounterService) all count through here, so they always agree.
@@ -56,13 +62,10 @@ class CounterRepository(
             _completions.value += 1
             val key = s.selectedMantraKey
             scope.launch {
-                val label = Mantras.customId(key)?.let { customDao.getById(it)?.name }
-                    ?: Mantras.builtIn(key)?.transliteration
-                    ?: key
                 japaDao.insert(
                     JapaRecord(
                         mantraKey = key,
-                        mantraLabel = label,
+                        mantraLabel = resolveMantraLabel(key, customDao),
                         startedAt = result.roundStartedAt,
                         completedAt = now,
                         dayKey = DayKeys.fromMillis(now),

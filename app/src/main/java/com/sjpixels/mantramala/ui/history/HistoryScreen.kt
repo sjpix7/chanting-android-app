@@ -73,6 +73,11 @@ import com.sjpixels.mantramala.data.DayBar
 import com.sjpixels.mantramala.data.DayGroup
 import com.sjpixels.mantramala.data.JapaRecord
 import com.sjpixels.mantramala.data.MALA_SIZE
+import com.sjpixels.mantramala.data.MantraTotal
+import com.sjpixels.mantramala.data.VoiceHistory
+import androidx.compose.material.icons.automirrored.sharp.VolumeUp
+import androidx.compose.material.icons.sharp.TouchApp
+import androidx.compose.ui.semantics.selected
 import com.sjpixels.mantramala.data.Mantras
 import com.sjpixels.mantramala.ui.MainViewModel
 import com.sjpixels.mantramala.ui.components.MandalaBackdrop
@@ -91,8 +96,9 @@ import java.util.Locale
 
 @Composable
 fun HistoryScreen(vm: MainViewModel) {
-    val stats by vm.stats.collectAsStateWithLifecycle()
+    val stats by vm.historyStats.collectAsStateWithLifecycle()
     val settings by vm.settings.collectAsStateWithLifecycle()
+    val showingVoice by vm.historyVoice.collectAsStateWithLifecycle()
     val locale = LocalConfiguration.current.locales[0] ?: Locale.ROOT
     val nf = remember(locale) { NumberFormat.getIntegerInstance(locale) }
 
@@ -127,6 +133,9 @@ fun HistoryScreen(vm: MainViewModel) {
                 OrnamentDivider()
             }
         }
+        if (settings.voiceHistory == VoiceHistory.SEPARATE) {
+            item { HistoryKindSwitch(showingVoice, vm::showVoiceHistory) }
+        }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -153,9 +162,12 @@ fun HistoryScreen(vm: MainViewModel) {
                 WeekChart(stats.last7Days, settings.dailyGoal, locale)
             }
         }
+        if (stats.byMantra.isNotEmpty()) {
+            item { MantraTotalsCard(stats.byMantra, nf) }
+        }
 
         if (stats.groups.isEmpty()) {
-            item { EmptyHistory() }
+            item { EmptyHistory(played = settings.voiceHistory == VoiceHistory.SEPARATE && showingVoice) }
         } else {
             item { SectionHeader(stringResource(R.string.section_record)) }
             // Whole lifetime, grouped by month. The latest month starts open; tap a month to fold/unfold it.
@@ -226,6 +238,70 @@ fun HistoryScreen(vm: MainViewModel) {
                 },
                 dismissButton = { TextButton(onClick = { confirmDay = null }) { Text(stringResource(R.string.action_cancel)) } },
             )
+        }
+    }
+}
+
+/** Chanted / Played switch, shown when the two histories are kept separate. */
+@Composable
+private fun HistoryKindSwitch(voice: Boolean, onSelect: (Boolean) -> Unit) {
+    val scheme = MaterialTheme.colorScheme
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        listOf(
+            false to (R.string.history_chanted to Icons.Sharp.TouchApp),
+            true to (R.string.history_played to Icons.AutoMirrored.Sharp.VolumeUp),
+        ).forEach { (isVoice, info) ->
+            val selected = voice == isVoice
+            Surface(
+                onClick = { onSelect(isVoice) },
+                shape = CutCornerShape(topStart = 10.dp, bottomEnd = 10.dp),
+                color = if (selected) scheme.primary else scheme.surfaceContainerHigh,
+                contentColor = if (selected) scheme.onPrimary else scheme.onSurface,
+                border = if (selected) null else BorderStroke(1.dp, scheme.outlineVariant),
+                modifier = Modifier.weight(1f).height(44.dp).semantics { this.selected = selected },
+            ) {
+                Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
+                    Icon(info.second, contentDescription = null, modifier = Modifier.size(18.dp))
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(info.first), style = MaterialTheme.typography.labelLarge)
+                }
+            }
+        }
+    }
+}
+
+/** Lifetime japa per mantra, most-chanted first, each with a bar relative to the top mantra. */
+@Composable
+private fun MantraTotalsCard(totals: List<MantraTotal>, nf: NumberFormat) {
+    val scheme = MaterialTheme.colorScheme
+    val top = totals.maxOf { it.malas }.coerceAtLeast(1)
+    SharpCard(Modifier.fillMaxWidth()) {
+        Text(stringResource(R.string.section_by_mantra), style = MaterialTheme.typography.titleMedium, color = scheme.onSurface)
+        Text(stringResource(R.string.by_mantra_caption), style = MaterialTheme.typography.bodySmall, color = scheme.onSurfaceVariant)
+        totals.forEach { t ->
+            val title = Mantras.builtIn(t.mantraKey)?.let { stringResource(it.titleRes) } ?: t.label
+            Spacer(Modifier.height(12.dp))
+            Row(verticalAlignment = Alignment.Bottom) {
+                Text(
+                    title,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = scheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(nf.format(t.japa), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = scheme.primary)
+            }
+            Spacer(Modifier.height(4.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Canvas(Modifier.weight(1f).height(6.dp)) {
+                    drawRect(scheme.outlineVariant.copy(alpha = 0.5f))
+                    drawRect(scheme.primary, size = Size(size.width * t.malas / top, size.height))
+                }
+                Spacer(Modifier.width(8.dp))
+                Text(pluralStringResource(R.plurals.malas_count, t.malas, t.malas), style = MaterialTheme.typography.labelMedium, color = scheme.onSurfaceVariant)
+            }
         }
     }
 }
@@ -303,11 +379,11 @@ private fun ClearPastDialog(groups: List<DayGroup>, onDismiss: () -> Unit, onCon
 }
 
 @Composable
-private fun EmptyHistory() {
+private fun EmptyHistory(played: Boolean) {
     Box(Modifier.fillMaxWidth().height(220.dp), contentAlignment = Alignment.Center) {
         MandalaBackdrop(Modifier.size(200.dp), alpha = 0.12f)
         Text(
-            stringResource(R.string.history_empty),
+            stringResource(if (played) R.string.history_empty_played else R.string.history_empty),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
@@ -357,7 +433,18 @@ private fun RecordRow(record: JapaRecord, locale: Locale, onDelete: () -> Unit) 
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(time, style = MaterialTheme.typography.titleMedium, color = scheme.primary, modifier = Modifier.width(76.dp))
             Column(Modifier.weight(1f)) {
-                Text(title, style = MaterialTheme.typography.bodyLarge, color = scheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (record.isVoice) {
+                        Icon(
+                            Icons.AutoMirrored.Sharp.VolumeUp,
+                            contentDescription = stringResource(R.string.history_played),
+                            tint = scheme.secondary,
+                            modifier = Modifier.size(16.dp),
+                        )
+                        Spacer(Modifier.width(6.dp))
+                    }
+                    Text(title, style = MaterialTheme.typography.bodyLarge, color = scheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                }
                 val d = record.completedAt - record.startedAt
                 Text(
                     if (record.startedAt > 0 && d > 0) stringResource(R.string.record_detail, MALA_SIZE, formatDuration(d)) else stringResource(R.string.record_detail_beads, MALA_SIZE),

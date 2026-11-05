@@ -60,6 +60,8 @@
     <string name="chart_last_7_days">Последние 7 дней</string>
     <string name="chart_caption">Кругов в день · пунктир = цель на день (%1$d)</string>
     <string name="section_record">Записи джапы</string>
+    <string name="section_by_mantra">По мантрам</string>
+    <string name="by_mantra_caption">Джапа за всё время по каждой мантре</string>
     <string name="delete_day_title">Удалить этот день</string>
     <plurals name="delete_day_message">
         <item quantity="one">%2$s: будет удалён %1$d круг.</item>
@@ -188,4 +190,42 @@
         <item quantity="other">Будут безвозвратно удалены %d круга. Это действие нельзя отменить.</item>
     </plurals>
     <string name="nothing_to_clear">Для этого варианта нечего удалять.</string>
+
+    <!-- Voice samples -->
+    <string name="action_done">Готово</string>
+    <string name="voice_channel_name">Воспроизведение голоса</string>
+    <string name="voice_add">Добавить запись голоса</string>
+    <string name="voice_add_desc">Запишите или загрузите эту мантру. Она звучит по кругу, и каждое проигрывание засчитывается.</string>
+    <string name="voice_samples_title">Записи голоса</string>
+    <string name="voice_samples_empty">Для этой мантры пока нет записей. Запишите, как вы читаете её один раз, или загрузите аудиофайл.</string>
+    <string name="voice_record">Записать</string>
+    <string name="voice_upload">Загрузить</string>
+    <string name="voice_recording">Идёт запись…</string>
+    <string name="voice_record_hint">Прочитайте мантру один раз и нажмите «Стоп».</string>
+    <string name="voice_stop">Стоп</string>
+    <string name="voice_play">Играть</string>
+    <string name="voice_pause">Пауза</string>
+    <string name="voice_rerecord">Записать заново</string>
+    <string name="voice_name">Название</string>
+    <string name="voice_default_name">Моя запись %1$d</string>
+    <string name="voice_mic_denied">Разрешите доступ к микрофону для записи. Можно также загрузить аудиофайл.</string>
+    <string name="voice_record_failed">Ничего не записано. Попробуйте ещё раз.</string>
+    <string name="voice_too_large">Файл слишком большой. Выберите файл меньше 50 МБ.</string>
+    <string name="voice_unplayable">Этот файл не воспроизводится. Попробуйте MP3, M4A, WAV или OGG.</string>
+    <string name="voice_missing">Запись не найдена. Запишите или загрузите её снова.</string>
+    <string name="voice_count">%1$d / %2$d повторов</string>
+    <string name="voice_mala_done">Мала завершена · нажмите «Играть», чтобы продолжить</string>
+    <string name="voice_reset">Сбросить счётчик голоса</string>
+    <string name="voice_manage">Управление записями</string>
+    <string name="voice_delete_title">Удалить запись?</string>
+    <string name="voice_delete_message">«%1$s» будет удалена с этого телефона.</string>
+    <string name="setting_voice_pause">Пауза после каждой малы</string>
+    <string name="setting_voice_pause_desc">Останавливаться после 108 повторов. Выключите, чтобы играть и считать дальше.</string>
+    <string name="setting_voice_history">Прослушанные малы в истории</string>
+    <string name="setting_voice_history_desc">Ведите отдельную историю для мал из записи или считайте их вместе с прочитанными.</string>
+    <string name="voice_history_merged">Вместе</string>
+    <string name="voice_history_separate">Отдельно</string>
+    <string name="history_chanted">Прочитанные</string>
+    <string name="history_played">Прослушанные</string>
+    <string name="history_empty_played">Прослушанных мал пока нет. Добавьте запись на экране «Джапа» и нажмите «Играть».</string>
 </resources>

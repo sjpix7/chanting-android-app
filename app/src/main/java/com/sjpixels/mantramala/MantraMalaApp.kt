@@ -6,6 +6,8 @@ import com.sjpixels.mantramala.data.CounterRepository
 import com.sjpixels.mantramala.data.JapaDatabase
 import com.sjpixels.mantramala.data.SettingsRepository
 import com.sjpixels.mantramala.util.Feedback
+import com.sjpixels.mantramala.voice.VoicePlayer
+import com.sjpixels.mantramala.voice.VoiceStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -20,6 +22,10 @@ class AppContainer(context: Context) {
     val feedback: Feedback by lazy { Feedback(context) }
     val counter: CounterRepository by lazy {
         CounterRepository(appScope, settings, database.japaDao(), database.customMantraDao(), feedback)
+    }
+    val voiceStore: VoiceStore by lazy { VoiceStore(context, database.voiceSampleDao()) }
+    val voicePlayer: VoicePlayer by lazy {
+        VoicePlayer(context, appScope, settings, database.japaDao(), database.customMantraDao(), voiceStore, feedback)
     }
 
     /** True while an app screen is visible; the over-other-apps bead hides itself then. */

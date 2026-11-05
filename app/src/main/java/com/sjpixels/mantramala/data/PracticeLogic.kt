@@ -56,6 +56,11 @@ object HistoryPruning {
 
 data class DayGroup(val dayKey: Int, val date: LocalDate, val records: List<JapaRecord>)
 
+/** Lifetime total for one mantra. [label] is the newest name snapshot (used for custom or deleted mantras). */
+data class MantraTotal(val mantraKey: String, val label: String, val malas: Int, val lastCompletedAt: Long) {
+    val japa: Long get() = malas.toLong() * MALA_SIZE
+}
+
 data class PracticeStats(
     val todayMalas: Int = 0,
     val totalMalas: Int = 0,
@@ -68,6 +73,8 @@ data class PracticeStats(
     val groups: List<DayGroup> = emptyList(),
     /** The earliest day with a completed mala, or null if there is no history. */
     val firstDay: LocalDate? = null,
+    /** Lifetime malas per mantra, most-chanted first. */
+    val byMantra: List<MantraTotal> = emptyList(),
 ) {
     val totalJapa: Long get() = totalMalas.toLong() * MALA_SIZE
 }
@@ -105,8 +112,15 @@ object StatsCalculator {
                 .sortedByDescending { it.key }
                 .map { (key, list) -> DayGroup(key, DayKeys.toDate(key), list) },
             firstDay = days.firstOrNull(),
+            byMantra = mantraTotals(records),
         )
     }
+
+    /** [records] newest first, so the first record of each mantra carries its latest name. */
+    fun mantraTotals(records: List<JapaRecord>): List<MantraTotal> =
+        records.groupBy { it.mantraKey }
+            .map { (key, list) -> MantraTotal(key, list.first().mantraLabel, list.size, list.first().completedAt) }
+            .sortedWith(compareByDescending<MantraTotal> { it.malas }.thenByDescending { it.lastCompletedAt })
 
     /** Consecutive days ending today — or yesterday, so the streak isn't "lost" before today's practice. */
     fun currentStreak(days: Set<LocalDate>, today: LocalDate): Int {

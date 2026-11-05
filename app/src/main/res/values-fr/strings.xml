@@ -58,6 +58,8 @@
     <string name="chart_last_7_days">7 derniers jours</string>
     <string name="chart_caption">Malas par jour · ligne pointillée = objectif quotidien (%1$d)</string>
     <string name="section_record">Journal de japa</string>
+    <string name="section_by_mantra">Par mantra</string>
+    <string name="by_mantra_caption">Japa de toute une vie par mantra</string>
     <string name="delete_day_title">Supprimer ce jour</string>
     <plurals name="delete_day_message">
         <item quantity="one">%2$s : %1$d mala sera supprimé.</item>
@@ -182,4 +184,42 @@
         <item quantity="other">%d malas seront définitivement supprimés. Cette action est irréversible.</item>
     </plurals>
     <string name="nothing_to_clear">Rien à effacer pour ce choix.</string>
+
+    <!-- Voice samples -->
+    <string name="action_done">Terminé</string>
+    <string name="voice_channel_name">Lecture vocale</string>
+    <string name="voice_add">Ajouter un enregistrement vocal</string>
+    <string name="voice_add_desc">Enregistrez ou importez ce mantra. Il est lu en boucle et chaque lecture est comptée.</string>
+    <string name="voice_samples_title">Enregistrements vocaux</string>
+    <string name="voice_samples_empty">Aucun enregistrement pour ce mantra. Enregistrez-vous en le récitant une fois, ou importez un fichier audio.</string>
+    <string name="voice_record">Enregistrer</string>
+    <string name="voice_upload">Importer</string>
+    <string name="voice_recording">Enregistrement…</string>
+    <string name="voice_record_hint">Récitez le mantra une fois, puis appuyez sur Arrêter.</string>
+    <string name="voice_stop">Arrêter</string>
+    <string name="voice_play">Lire</string>
+    <string name="voice_pause">Pause</string>
+    <string name="voice_rerecord">Recommencer</string>
+    <string name="voice_name">Nom</string>
+    <string name="voice_default_name">Mon enregistrement %1$d</string>
+    <string name="voice_mic_denied">Autorisez le micro pour enregistrer. Vous pouvez aussi importer un fichier audio.</string>
+    <string name="voice_record_failed">Rien n\'a été enregistré. Veuillez réessayer.</string>
+    <string name="voice_too_large">Ce fichier est trop volumineux. Choisissez-en un de moins de 50 Mo.</string>
+    <string name="voice_unplayable">Ce fichier ne peut pas être lu. Essayez un fichier MP3, M4A, WAV ou OGG.</string>
+    <string name="voice_missing">Enregistrement introuvable. Veuillez l\'enregistrer ou l\'importer à nouveau.</string>
+    <string name="voice_count">%1$d / %2$d lectures</string>
+    <string name="voice_mala_done">Mala terminé · appuyez sur lecture pour continuer</string>
+    <string name="voice_reset">Réinitialiser le compteur vocal</string>
+    <string name="voice_manage">Gérer les enregistrements</string>
+    <string name="voice_delete_title">Supprimer l\'enregistrement ?</string>
+    <string name="voice_delete_message">« %1$s » sera supprimé de ce téléphone.</string>
+    <string name="setting_voice_pause">Pause après chaque mala</string>
+    <string name="setting_voice_pause_desc">S\'arrêter après 108 lectures. Désactivez pour continuer à lire et à compter.</string>
+    <string name="setting_voice_history">Malas écoutés dans l\'historique</string>
+    <string name="setting_voice_history_desc">Gardez un historique séparé pour les malas lus depuis un enregistrement, ou comptez-les avec les malas récités.</string>
+    <string name="voice_history_merged">Ensemble</string>
+    <string name="voice_history_separate">Séparés</string>
+    <string name="history_chanted">Récités</string>
+    <string name="history_played">Écoutés</string>
+    <string name="history_empty_played">Aucun mala écouté pour l\'instant. Ajoutez un enregistrement sur l\'écran Japa et appuyez sur lecture.</string>
 </resources>

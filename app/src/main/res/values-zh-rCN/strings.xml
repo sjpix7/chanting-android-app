@@ -54,6 +54,8 @@
     <string name="chart_last_7_days">最近 7 天</string>
     <string name="chart_caption">每日圈数 · 虚线 = 每日目标（%1$d）</string>
     <string name="section_record">持诵记录</string>
+    <string name="section_by_mantra">按咒语</string>
+    <string name="by_mantra_caption">每个咒语的累计持诵</string>
     <string name="delete_day_title">删除这一天</string>
     <plurals name="delete_day_message">
         <item quantity="other">%2$s：将删除 %1$d 圈记录。</item>
@@ -170,4 +172,42 @@
         <item quantity="other">将永久删除 %d 圈记录，此操作无法撤销。</item>
     </plurals>
     <string name="nothing_to_clear">此选项下没有可清除的记录。</string>
+
+    <!-- Voice samples -->
+    <string name="action_done">完成</string>
+    <string name="voice_channel_name">语音播放</string>
+    <string name="voice_add">添加语音样本</string>
+    <string name="voice_add_desc">录制或上传这句咒语。它会循环播放，每播放一遍都会计数。</string>
+    <string name="voice_samples_title">语音样本</string>
+    <string name="voice_samples_empty">这句咒语还没有语音样本。录下自己持诵一遍，或上传一个音频文件。</string>
+    <string name="voice_record">录音</string>
+    <string name="voice_upload">上传</string>
+    <string name="voice_recording">正在录音…</string>
+    <string name="voice_record_hint">持诵咒语一遍，然后点按停止。</string>
+    <string name="voice_stop">停止</string>
+    <string name="voice_play">播放</string>
+    <string name="voice_pause">暂停</string>
+    <string name="voice_rerecord">重新录制</string>
+    <string name="voice_name">名称</string>
+    <string name="voice_default_name">我的录音 %1$d</string>
+    <string name="voice_mic_denied">请允许使用麦克风以录音。你也可以改为上传音频文件。</string>
+    <string name="voice_record_failed">没有录到声音，请重试。</string>
+    <string name="voice_too_large">文件太大，请选择小于 50 MB 的文件。</string>
+    <string name="voice_unplayable">无法播放此文件。请尝试 MP3、M4A、WAV 或 OGG 文件。</string>
+    <string name="voice_missing">找不到录音，请重新录制或上传。</string>
+    <string name="voice_count">%1$d / %2$d 遍</string>
+    <string name="voice_mala_done">一串念珠完成 · 点按播放继续</string>
+    <string name="voice_reset">重置语音计数</string>
+    <string name="voice_manage">管理语音样本</string>
+    <string name="voice_delete_title">删除语音样本？</string>
+    <string name="voice_delete_message">“%1$s”将从此手机中删除。</string>
+    <string name="setting_voice_pause">每串念珠后暂停</string>
+    <string name="setting_voice_pause_desc">播放 108 遍后停止。关闭则持续播放并计数。</string>
+    <string name="setting_voice_history">历史中的播放念珠</string>
+    <string name="setting_voice_history_desc">为语音样本播放的念珠单独记录，或与持诵的念珠合并计算。</string>
+    <string name="voice_history_merged">合并</string>
+    <string name="voice_history_separate">分开</string>
+    <string name="history_chanted">持诵</string>
+    <string name="history_played">播放</string>
+    <string name="history_empty_played">还没有播放的念珠。在持诵页面添加语音样本并点按播放。</string>
 </resources>

@@ -55,6 +55,14 @@ FLOATING BEAD — COUNT FROM ANYWHERE
 • Optional: keep it over other apps, even after you close Mantra Mala
 • Long-press the bead to jump back into the app
 
+VOICE JAPA — LISTEN AND COUNT
+• Record yourself chanting a mantra once, or upload a recording (your guru's, a bhajan, any audio file)
+• Keep several voice samples per mantra and pick one
+• It plays on repeat with its own counter: every play is counted
+• Keeps playing with the screen off, with Pause and Stop in the notification
+• Pause after every 108 plays, or keep playing non-stop: your choice
+• Keep a separate history for played malas, or count them together with chanted ones
+
 14 SACRED MANTRAS — OR YOUR OWN
 Om Namah Shivaya · Hare Krishna Maha Mantra · Gayatri Mantra · Mahamrityunjaya Mantra · Om Namo Bhagavate Vasudevaya · Shri Ram Jai Ram · Radhe Radhe · Ganesha · Hanuman · Om Namo Narayanaya · Saraswati · Lakshmi · Durga · Om (Pranava)
 Each comes with Devanagari text, transliteration and meaning. Add the mantra your guru gave you.
@@ -65,6 +73,7 @@ YOUR SADHANA, KEPT
 • Total malas and total japa
 • Last-7-days chart and average time per mala
 • Lifetime history from the day you install, by month and day
+• Lifetime japa for each mantra
 • Delete one entry (with undo) or a whole day, or clear past history: everything before today, older than 30 days, older than a year, or all of it
 
 MODERN HINDU DESIGN
@@ -81,6 +90,11 @@ Hari Om 🙏
 **Release notes for version 1.0.0**
 ```
 First release: 108-bead japa counter, floating bead you can use over other apps, 14 mantras plus your own, history and streaks, 9 colour themes, 3 counter styles, day/night mode and 9 languages.
+```
+
+**Release notes for version 1.1.0**
+```
+New: voice japa. Record or upload a mantra, play it on repeat and every play is counted, even with the screen off. Choose to pause after each mala and to keep played malas in a separate history. History now shows lifetime japa for each mantra.
 ```
 
 ---
@@ -115,6 +129,14 @@ First release: 108-bead japa counter, floating bead you can use over other apps,
 • वैकल्पिक: ऐप बंद करने के बाद भी इसे दूसरे ऐप्स के ऊपर रखें
 • ऐप में लौटने के लिए मनके को देर तक दबाएँ
 
+आवाज़ जप — सुनें और गिनें
+• मंत्र को एक बार जपते हुए रिकॉर्ड करें, या कोई रिकॉर्डिंग अपलोड करें (गुरु की आवाज़, भजन, कोई भी ऑडियो फ़ाइल)
+• हर मंत्र के लिए कई आवाज़ नमूने रखें और एक चुनें
+• यह बार-बार चलता है और इसकी अपनी गिनती है: हर बार गिना जाता है
+• स्क्रीन बंद होने पर भी चलता रहता है, सूचना में विराम और रोकें बटन
+• हर 108 बार के बाद रुकें, या लगातार चलने दें — आपकी पसंद
+• सुनी गई मालाओं का अलग इतिहास रखें, या उन्हें जपी गई मालाओं के साथ गिनें
+
 14 पवित्र मंत्र — या अपना मंत्र
 ॐ नमः शिवाय · हरे कृष्ण महामंत्र · गायत्री मंत्र · महामृत्युंजय मंत्र · ॐ नमो भगवते वासुदेवाय · श्री राम जय राम · राधे राधे · गणेश · हनुमान · ॐ नमो नारायणाय · सरस्वती · लक्ष्मी · दुर्गा · ॐ (प्रणव)
 हर मंत्र देवनागरी, लिप्यंतरण और अर्थ के साथ। अपने गुरु द्वारा दिया गया मंत्र भी जोड़ें।
@@ -125,6 +147,7 @@ First release: 108-bead japa counter, floating bead you can use over other apps,
 • कुल मालाएँ और कुल जप
 • पिछले 7 दिनों का चार्ट और प्रति माला औसत समय
 • इंस्टॉल के दिन से आजीवन इतिहास, महीने और दिन के अनुसार
+• हर मंत्र का आजीवन जप
 • एक प्रविष्टि (पूर्ववत सहित) या पूरा दिन हटाएँ, या पुराना इतिहास मिटाएँ: आज से पहले का, 30 दिन या 1 वर्ष से पुराना, या सब कुछ
 
 आधुनिक भारतीय डिज़ाइन

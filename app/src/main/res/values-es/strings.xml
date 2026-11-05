@@ -58,6 +58,8 @@
     <string name="chart_last_7_days">Últimos 7 días</string>
     <string name="chart_caption">Malas por día · línea discontinua = meta diaria (%1$d)</string>
     <string name="section_record">Registro de japa</string>
+    <string name="section_by_mantra">Por mantra</string>
+    <string name="by_mantra_caption">Japa de toda la vida por mantra</string>
     <string name="delete_day_title">Eliminar este día</string>
     <plurals name="delete_day_message">
         <item quantity="one">%2$s: se eliminará %1$d mala.</item>
@@ -182,4 +184,42 @@
         <item quantity="other">Se eliminarán %d malas de forma permanente. No se puede deshacer.</item>
     </plurals>
     <string name="nothing_to_clear">No hay nada que borrar con esta opción.</string>
+
+    <!-- Voice samples -->
+    <string name="action_done">Listo</string>
+    <string name="voice_channel_name">Reproducción de voz</string>
+    <string name="voice_add">Añadir una grabación de voz</string>
+    <string name="voice_add_desc">Graba o sube este mantra. Se reproduce en bucle y cada reproducción se cuenta.</string>
+    <string name="voice_samples_title">Grabaciones de voz</string>
+    <string name="voice_samples_empty">Este mantra aún no tiene grabaciones. Grábate recitándolo una vez o sube un archivo de audio.</string>
+    <string name="voice_record">Grabar</string>
+    <string name="voice_upload">Subir</string>
+    <string name="voice_recording">Grabando…</string>
+    <string name="voice_record_hint">Recita el mantra una vez y luego toca Detener.</string>
+    <string name="voice_stop">Detener</string>
+    <string name="voice_play">Reproducir</string>
+    <string name="voice_pause">Pausa</string>
+    <string name="voice_rerecord">Grabar de nuevo</string>
+    <string name="voice_name">Nombre</string>
+    <string name="voice_default_name">Mi grabación %1$d</string>
+    <string name="voice_mic_denied">Permite el acceso al micrófono para grabar. También puedes subir un archivo de audio.</string>
+    <string name="voice_record_failed">No se grabó nada. Inténtalo de nuevo.</string>
+    <string name="voice_too_large">El archivo es demasiado grande. Elige uno de menos de 50 MB.</string>
+    <string name="voice_unplayable">Este archivo no se puede reproducir. Prueba con un archivo MP3, M4A, WAV u OGG.</string>
+    <string name="voice_missing">No se encontró la grabación. Vuelve a grabarla o subirla.</string>
+    <string name="voice_count">%1$d / %2$d reproducciones</string>
+    <string name="voice_mala_done">Mala completa · toca reproducir para continuar</string>
+    <string name="voice_reset">Reiniciar contador de voz</string>
+    <string name="voice_manage">Gestionar grabaciones de voz</string>
+    <string name="voice_delete_title">¿Eliminar la grabación?</string>
+    <string name="voice_delete_message">«%1$s» se eliminará de este teléfono.</string>
+    <string name="setting_voice_pause">Pausar tras cada mala</string>
+    <string name="setting_voice_pause_desc">Detener tras 108 reproducciones. Desactívalo para seguir reproduciendo y contando.</string>
+    <string name="setting_voice_history">Malas reproducidas en el historial</string>
+    <string name="setting_voice_history_desc">Lleva un historial aparte para las malas reproducidas o cuéntalas junto con las recitadas.</string>
+    <string name="voice_history_merged">Juntas</string>
+    <string name="voice_history_separate">Separadas</string>
+    <string name="history_chanted">Recitadas</string>
+    <string name="history_played">Reproducidas</string>
+    <string name="history_empty_played">Aún no hay malas reproducidas. Añade una grabación en la pantalla Japa y toca reproducir.</string>
 </resources>

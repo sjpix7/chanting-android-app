@@ -84,6 +84,7 @@ import com.sjpixels.mantramala.ui.components.Diamond
 import com.sjpixels.mantramala.ui.components.MandalaBackdrop
 import com.sjpixels.mantramala.ui.components.SharpCard
 import com.sjpixels.mantramala.ui.mantras.mantraTitle
+import com.sjpixels.mantramala.ui.voice.VoiceBar
 import com.sjpixels.mantramala.ui.theme.Cinzel
 import com.sjpixels.mantramala.ui.theme.Devanagari
 import kotlinx.coroutines.launch
@@ -149,6 +150,7 @@ fun CounterScreen(vm: MainViewModel, onOpenMantras: () -> Unit) {
                     verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
                 ) {
                     MantraHeader(mantra, onOpenMantras)
+                    VoiceBar(vm, mantra?.let { mantraTitle(it) } ?: "")
                     Controls(onMinus = vm::decrement, onReset = { confirmReset = true }, onPlus = vm::increment, resetEnabled = counter.count > 0)
                     StatsRow(stats.todayMalas, settings.dailyGoal, stats.currentStreak, stats.totalMalas, stats.totalJapa + counter.count)
                 }
@@ -156,6 +158,8 @@ fun CounterScreen(vm: MainViewModel, onOpenMantras: () -> Unit) {
         } else {
             Column(Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 12.dp)) {
                 MantraHeader(mantra, onOpenMantras)
+                Spacer(Modifier.height(8.dp))
+                VoiceBar(vm, mantra?.let { mantraTitle(it) } ?: "")
                 Box(Modifier.weight(1f).fillMaxWidth().padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
                     DialBox(dial)
                 }

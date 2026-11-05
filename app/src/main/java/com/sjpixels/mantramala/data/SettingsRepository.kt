@@ -22,6 +22,9 @@ enum class ThemeMode { SYSTEM, LIGHT, DARK }
 
 enum class CounterStyle { MALA, PADMA, YANTRA }
 
+/** Whether malas played from a voice sample share the history of chanted malas or keep their own. */
+enum class VoiceHistory { MERGED, SEPARATE }
+
 data class UserSettings(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val paletteId: String = "saffron",
@@ -43,10 +46,16 @@ data class UserSettings(
     /** Bead position as fractions (0..1) of the available width / height. */
     val floatX: Float = 0.97f,
     val floatY: Float = 0.66f,
+    /** Voice playback stops after every 108 plays; off = keep playing and counting. */
+    val voicePauseEachMala: Boolean = true,
+    val voiceHistory: VoiceHistory = VoiceHistory.SEPARATE,
 )
 
 /** The in-progress round. Persisted on every bead so nothing is lost if the app is closed. */
 data class CounterState(val count: Int = 0, val roundStartedAt: Long = 0L)
+
+/** The in-progress round of voice plays, for one mantra. */
+data class VoiceCounterState(val mantraKey: String = "", val count: Int = 0, val roundStartedAt: Long = 0L)
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -71,6 +80,11 @@ class SettingsRepository(context: Context) {
         val floatingSize = intPreferencesKey("floating_size")
         val floatX = floatPreferencesKey("float_x")
         val floatY = floatPreferencesKey("float_y")
+        val voicePause = booleanPreferencesKey("voice_pause_each_mala")
+        val voiceHistory = stringPreferencesKey("voice_history")
+        val voiceMantra = stringPreferencesKey("voice_count_mantra")
+        val voiceCount = intPreferencesKey("voice_count")
+        val voiceRoundStart = longPreferencesKey("voice_round_started_at")
     }
 
     val settings: Flow<UserSettings> = store.data.map { p ->
@@ -91,8 +105,27 @@ class SettingsRepository(context: Context) {
             floatingSize = (p[Keys.floatingSize] ?: d.floatingSize).coerceIn(FLOATING_SIZE_MIN, FLOATING_SIZE_MAX),
             floatX = (p[Keys.floatX] ?: d.floatX).coerceIn(0f, 1f),
             floatY = (p[Keys.floatY] ?: d.floatY).coerceIn(0f, 1f),
+            voicePauseEachMala = p[Keys.voicePause] ?: d.voicePauseEachMala,
+            voiceHistory = p[Keys.voiceHistory].toEnum(d.voiceHistory),
         )
     }
+
+    val voiceCounter: Flow<VoiceCounterState> = store.data.map { p ->
+        VoiceCounterState(
+            mantraKey = p[Keys.voiceMantra] ?: "",
+            count = (p[Keys.voiceCount] ?: 0).coerceIn(0, MALA_SIZE - 1),
+            roundStartedAt = p[Keys.voiceRoundStart] ?: 0L,
+        )
+    }
+
+    suspend fun saveVoiceCounter(state: VoiceCounterState) = store.edit {
+        it[Keys.voiceMantra] = state.mantraKey
+        it[Keys.voiceCount] = state.count
+        it[Keys.voiceRoundStart] = state.roundStartedAt
+    }
+
+    suspend fun setVoicePauseEachMala(on: Boolean) = store.edit { it[Keys.voicePause] = on }
+    suspend fun setVoiceHistory(mode: VoiceHistory) = store.edit { it[Keys.voiceHistory] = mode.name }
 
     val counter: Flow<CounterState> = store.data.map { p ->
         CounterState(

@@ -1,2 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<full-backup-content />
+<!-- Android 11 and below. Voice recordings are left out (cloud backup is capped at 25 MB per app). -->
+<full-backup-content>
+    <exclude domain="file" path="voice/" />
+</full-backup-content>

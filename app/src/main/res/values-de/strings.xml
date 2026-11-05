@@ -56,6 +56,8 @@
     <string name="chart_last_7_days">Letzte 7 Tage</string>
     <string name="chart_caption">Malas pro Tag · gestrichelte Linie = Tagesziel (%1$d)</string>
     <string name="section_record">Japa-Protokoll</string>
+    <string name="section_by_mantra">Nach Mantra</string>
+    <string name="by_mantra_caption">Lebenslanges Japa je Mantra</string>
     <string name="delete_day_title">Diesen Tag löschen</string>
     <plurals name="delete_day_message">
         <item quantity="one">%2$s: %1$d Mala wird gelöscht.</item>
@@ -176,4 +178,42 @@
         <item quantity="other">%d Malas werden endgültig gelöscht. Dies kann nicht rückgängig gemacht werden.</item>
     </plurals>
     <string name="nothing_to_clear">Für diese Auswahl gibt es nichts zu löschen.</string>
+
+    <!-- Voice samples -->
+    <string name="action_done">Fertig</string>
+    <string name="voice_channel_name">Sprachwiedergabe</string>
+    <string name="voice_add">Sprachaufnahme hinzufügen</string>
+    <string name="voice_add_desc">Nimm dieses Mantra auf oder lade es hoch. Es läuft in Schleife und jede Wiedergabe wird gezählt.</string>
+    <string name="voice_samples_title">Sprachaufnahmen</string>
+    <string name="voice_samples_empty">Für dieses Mantra gibt es noch keine Aufnahme. Nimm dich einmal beim Rezitieren auf oder lade eine Audiodatei hoch.</string>
+    <string name="voice_record">Aufnehmen</string>
+    <string name="voice_upload">Hochladen</string>
+    <string name="voice_recording">Aufnahme läuft…</string>
+    <string name="voice_record_hint">Rezitiere das Mantra einmal und tippe dann auf Stopp.</string>
+    <string name="voice_stop">Stopp</string>
+    <string name="voice_play">Abspielen</string>
+    <string name="voice_pause">Pause</string>
+    <string name="voice_rerecord">Neu aufnehmen</string>
+    <string name="voice_name">Name</string>
+    <string name="voice_default_name">Meine Aufnahme %1$d</string>
+    <string name="voice_mic_denied">Erlaube den Mikrofonzugriff, um aufzunehmen. Du kannst stattdessen auch eine Audiodatei hochladen.</string>
+    <string name="voice_record_failed">Es wurde nichts aufgenommen. Bitte versuche es erneut.</string>
+    <string name="voice_too_large">Diese Datei ist zu groß. Wähle eine unter 50 MB.</string>
+    <string name="voice_unplayable">Diese Datei kann nicht abgespielt werden. Versuche eine MP3-, M4A-, WAV- oder OGG-Datei.</string>
+    <string name="voice_missing">Aufnahme nicht gefunden. Bitte nimm sie erneut auf oder lade sie hoch.</string>
+    <string name="voice_count">%1$d / %2$d Wiedergaben</string>
+    <string name="voice_mala_done">Mala vollendet · tippe auf Abspielen, um fortzufahren</string>
+    <string name="voice_reset">Sprachzähler zurücksetzen</string>
+    <string name="voice_manage">Sprachaufnahmen verwalten</string>
+    <string name="voice_delete_title">Sprachaufnahme löschen?</string>
+    <string name="voice_delete_message">„%1$s“ wird von diesem Telefon entfernt.</string>
+    <string name="setting_voice_pause">Nach jeder Mala pausieren</string>
+    <string name="setting_voice_pause_desc">Nach 108 Wiedergaben anhalten. Ausschalten, um weiterzuspielen und weiterzuzählen.</string>
+    <string name="setting_voice_history">Abgespielte Malas im Verlauf</string>
+    <string name="setting_voice_history_desc">Führe einen eigenen Verlauf für abgespielte Malas oder zähle sie zusammen mit rezitierten Malas.</string>
+    <string name="voice_history_merged">Zusammen</string>
+    <string name="voice_history_separate">Getrennt</string>
+    <string name="history_chanted">Rezitiert</string>
+    <string name="history_played">Abgespielt</string>
+    <string name="history_empty_played">Noch keine abgespielten Malas. Füge auf dem Japa-Bildschirm eine Sprachaufnahme hinzu und tippe auf Abspielen.</string>
 </resources>

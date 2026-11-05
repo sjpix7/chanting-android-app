@@ -1,6 +1,8 @@
 package com.sjpixels.mantramala.data
 
 import android.content.Context
+import androidx.room.AutoMigration
+import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Delete
@@ -13,6 +15,12 @@ import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import kotlinx.coroutines.flow.Flow
+
+/** How a mala was counted: tapped while chanting, or played from a voice sample. */
+object MalaSource {
+    const val TAP = "tap"
+    const val VOICE = "voice"
+}
 
 /** One completed mala (108 beads). */
 @Entity(tableName = "japa_records", indices = [Index("dayKey")])
@@ -28,7 +36,11 @@ data class JapaRecord(
     val completedAt: Long,
     /** Local calendar day of completion, yyyyMMdd. */
     val dayKey: Int,
-)
+    /** [MalaSource.TAP] or [MalaSource.VOICE]. */
+    @ColumnInfo(defaultValue = MalaSource.TAP) val source: String = MalaSource.TAP,
+) {
+    val isVoice: Boolean get() = source == MalaSource.VOICE
+}
 
 @Entity(tableName = "custom_mantras")
 data class CustomMantra(
@@ -38,6 +50,42 @@ data class CustomMantra(
     val meaning: String = "",
     val createdAt: Long = System.currentTimeMillis(),
 )
+
+/** A voice recording of a mantra, recorded in the app or imported from a file. Audio lives in filesDir/voice/. */
+@Entity(tableName = "voice_samples", indices = [Index("mantraKey")])
+data class VoiceSample(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val mantraKey: String,
+    val name: String,
+    /** File name inside filesDir/voice/. */
+    val fileName: String,
+    val durationMs: Long,
+    val recorded: Boolean,
+    val createdAt: Long = System.currentTimeMillis(),
+    /** The sample picked most recently is the one that plays for its mantra. */
+    val selectedAt: Long = createdAt,
+)
+
+@Dao
+interface VoiceSampleDao {
+    @Insert
+    suspend fun insert(sample: VoiceSample): Long
+
+    @Query("SELECT * FROM voice_samples ORDER BY createdAt ASC")
+    fun observeAll(): Flow<List<VoiceSample>>
+
+    @Query("SELECT * FROM voice_samples WHERE id = :id")
+    suspend fun getById(id: Long): VoiceSample?
+
+    @Query("SELECT * FROM voice_samples WHERE mantraKey = :mantraKey")
+    suspend fun forMantra(mantraKey: String): List<VoiceSample>
+
+    @Query("UPDATE voice_samples SET selectedAt = :at WHERE id = :id")
+    suspend fun select(id: Long, at: Long = System.currentTimeMillis())
+
+    @Delete
+    suspend fun delete(sample: VoiceSample)
+}
 
 @Dao
 interface JapaDao {
@@ -50,15 +98,15 @@ interface JapaDao {
     @Delete
     suspend fun delete(record: JapaRecord)
 
-    @Query("DELETE FROM japa_records WHERE dayKey = :dayKey")
-    suspend fun deleteDay(dayKey: Int)
+    @Query("DELETE FROM japa_records WHERE dayKey = :dayKey AND source IN (:sources)")
+    suspend fun deleteDay(dayKey: Int, sources: List<String>)
 
-    @Query("DELETE FROM japa_records")
-    suspend fun deleteAll()
+    @Query("DELETE FROM japa_records WHERE source IN (:sources)")
+    suspend fun deleteAll(sources: List<String>)
 
     /** Deletes every mala completed before [dayKey] (yyyyMMdd); that day and later are kept. */
-    @Query("DELETE FROM japa_records WHERE dayKey < :dayKey")
-    suspend fun deleteBefore(dayKey: Int)
+    @Query("DELETE FROM japa_records WHERE dayKey < :dayKey AND source IN (:sources)")
+    suspend fun deleteBefore(dayKey: Int, sources: List<String>)
 }
 
 @Dao
@@ -76,10 +124,16 @@ interface CustomMantraDao {
     suspend fun delete(mantra: CustomMantra)
 }
 
-@Database(entities = [JapaRecord::class, CustomMantra::class], version = 1, exportSchema = true)
+@Database(
+    entities = [JapaRecord::class, CustomMantra::class, VoiceSample::class],
+    version = 2,
+    exportSchema = true,
+    autoMigrations = [AutoMigration(from = 1, to = 2)],
+)
 abstract class JapaDatabase : RoomDatabase() {
     abstract fun japaDao(): JapaDao
     abstract fun customMantraDao(): CustomMantraDao
+    abstract fun voiceSampleDao(): VoiceSampleDao
 
     companion object {
         fun create(context: Context): JapaDatabase =

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Android's own device backup / phone-to-phone transfer keeps your japa history when you change phones.
-     This is an OS feature controlled by the user; the app itself never uploads anything. -->
+     This is an OS feature controlled by the user; the app itself never uploads anything.
+     Voice recordings are left out of cloud backup (Android caps it at 25 MB per app) but move with a phone-to-phone transfer. -->
 <data-extraction-rules>
-    <cloud-backup />
+    <cloud-backup>
+        <exclude domain="file" path="voice/" />
+    </cloud-backup>
     <device-transfer />
 </data-extraction-rules>

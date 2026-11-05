@@ -32,6 +32,16 @@ import android.os.Build
 import com.sjpixels.mantramala.data.ClearRange
 import com.sjpixels.mantramala.data.DayKeys
 import com.sjpixels.mantramala.data.HistoryPruning
+import android.net.Uri
+import com.sjpixels.mantramala.R
+import com.sjpixels.mantramala.data.MalaSource
+import com.sjpixels.mantramala.data.VoiceCounterState
+import com.sjpixels.mantramala.data.VoiceHistory
+import com.sjpixels.mantramala.data.VoiceSample
+import com.sjpixels.mantramala.voice.ImportResult
+import com.sjpixels.mantramala.voice.VoicePlayback
+import kotlinx.coroutines.flow.distinctUntilChanged
+import java.io.File
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -40,6 +50,8 @@ enum class Tab { JAPA, MANTRAS, HISTORY, THEMES }
 
 sealed interface UiEvent {
     data class RecordDeleted(val record: JapaRecord) : UiEvent
+    /** A message (string resource) to show in a snackbar. */
+    data class Message(val res: Int) : UiEvent
 }
 
 /** UI-facing view of either a built-in or a user-added mantra. */
@@ -60,6 +72,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val japaDao = container.database.japaDao()
     private val customDao = container.database.customMantraDao()
     private val counterRepo = container.counter
+    private val voiceStore = container.voiceStore
+    private val voicePlayer = container.voicePlayer
 
     private val _settingsLoaded = MutableStateFlow(false)
 
@@ -82,10 +96,38 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val _events = MutableSharedFlow<UiEvent>(extraBufferCapacity = 8)
     val events: SharedFlow<UiEvent> = _events.asSharedFlow()
 
-    val stats: StateFlow<PracticeStats> = combine(japaDao.observeAll(), _today) { records, today ->
-        StatsCalculator.compute(records, today)
+    private val records = japaDao.observeAll()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    /** Chanting stats for the Japa screen: tapped malas, plus played ones when histories are merged. */
+    val stats: StateFlow<PracticeStats> = combine(records, _today, settings) { all, today, s ->
+        StatsCalculator.compute(if (s.voiceHistory == VoiceHistory.MERGED) all else all.filter { !it.isVoice }, today)
     }.flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.Eagerly, PracticeStats())
+
+    /** Which history the History tab shows when chanted and played malas are kept separate. */
+    private val _historyVoice = MutableStateFlow(false)
+    val historyVoice: StateFlow<Boolean> = _historyVoice.asStateFlow()
+
+    val historyStats: StateFlow<PracticeStats> = combine(records, _today, settings, _historyVoice) { all, today, s, voice ->
+        StatsCalculator.compute(if (s.voiceHistory == VoiceHistory.MERGED) all else all.filter { it.isVoice == voice }, today)
+    }.flowOn(Dispatchers.Default)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, PracticeStats())
+
+    /** Malas played from voice samples today (for the voice bar). */
+    val voiceTodayMalas: StateFlow<Int> = combine(records, _today) { all, today ->
+        val key = DayKeys.of(today)
+        all.count { it.isVoice && it.dayKey == key }
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, 0)
+
+    fun showVoiceHistory(voice: Boolean) { _historyVoice.value = voice }
+
+    /** Record sources the History tab currently acts on (for deleting). */
+    private fun historySources(): List<String> = when {
+        settings.value.voiceHistory == VoiceHistory.MERGED -> listOf(MalaSource.TAP, MalaSource.VOICE)
+        _historyVoice.value -> listOf(MalaSource.VOICE)
+        else -> listOf(MalaSource.TAP)
+    }
 
     val customMantras: StateFlow<List<CustomMantra>> = customDao.observeAll()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
@@ -102,10 +144,65 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         options.firstOrNull { it.key == s.selectedMantraKey } ?: options.firstOrNull()
     }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
+    // --- Voice samples ---
+    val voiceSamples: StateFlow<List<VoiceSample>> = container.database.voiceSampleDao().observeAll()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    /** Samples of the selected mantra; the most recently picked one plays. */
+    val mantraSamples: StateFlow<List<VoiceSample>> = combine(voiceSamples, settings) { all, s ->
+        all.filter { it.mantraKey == s.selectedMantraKey }
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    val activeSample: StateFlow<VoiceSample?> = mantraSamples.map { list -> list.maxByOrNull { it.selectedAt } }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    val voicePlayback: StateFlow<VoicePlayback> = voicePlayer.playback
+    val voiceCounter: StateFlow<VoiceCounterState> = voicePlayer.counter
+
+    fun newRecordingFile(): File = voiceStore.newRecordingFile()
+
+    fun toggleVoice() {
+        val sample = activeSample.value ?: return
+        val p = voicePlayback.value
+        if (p.sample?.id == sample.id && p.status != com.sjpixels.mantramala.voice.VoiceStatus.IDLE) voicePlayer.toggle() else voicePlayer.play(sample)
+    }
+
+    fun stopVoice() = voicePlayer.stop()
+
+    fun resetVoiceCount() = voicePlayer.resetCount()
+
+    fun selectSample(sample: VoiceSample) = viewModelScope.launch {
+        container.database.voiceSampleDao().select(sample.id)
+        val p = voicePlayback.value
+        if (p.sample != null && p.sample.id != sample.id && p.status != com.sjpixels.mantramala.voice.VoiceStatus.IDLE) voicePlayer.play(sample)
+    }
+
+    fun deleteSample(sample: VoiceSample) = viewModelScope.launch {
+        voicePlayer.stopIfPlaying(sample.id)
+        voiceStore.delete(sample)
+    }
+
+    fun saveRecording(file: File, name: String) = viewModelScope.launch {
+        val added = voiceStore.addRecording(settings.value.selectedMantraKey, name.trim().take(60), file)
+        if (added == null) _events.emit(UiEvent.Message(R.string.voice_record_failed))
+    }
+
+    fun importSample(uri: Uri) = viewModelScope.launch {
+        when (voiceStore.import(settings.value.selectedMantraKey, uri)) {
+            is ImportResult.Added -> Unit
+            ImportResult.TooLarge -> _events.emit(UiEvent.Message(R.string.voice_too_large))
+            ImportResult.Unplayable -> _events.emit(UiEvent.Message(R.string.voice_unplayable))
+        }
+    }
+
     init {
         viewModelScope.launch {
             repo.settings.first()
             _settingsLoaded.value = true
+        }
+        // Switching to another mantra stops a recording of the previous one.
+        viewModelScope.launch {
+            settings.map { it.selectedMantraKey }.distinctUntilChanged().collect { voicePlayer.stopUnlessMantra(it) }
         }
     }
 
@@ -128,6 +225,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun deleteCustomMantra(mantra: CustomMantra) = viewModelScope.launch {
+        voicePlayer.playback.value.sample?.takeIf { it.mantraKey == Mantras.customKey(mantra.id) }?.let { voicePlayer.stop() }
+        voiceStore.deleteForMantra(Mantras.customKey(mantra.id))
         customDao.delete(mantra)
         if (settings.value.selectedMantraKey == Mantras.customKey(mantra.id)) repo.setMantra(Mantras.DEFAULT_KEY)
     }
@@ -140,12 +239,13 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     fun restoreRecord(record: JapaRecord) = viewModelScope.launch { japaDao.insert(record) }
 
-    fun deleteDay(dayKey: Int) = viewModelScope.launch { japaDao.deleteDay(dayKey) }
+    fun deleteDay(dayKey: Int) = viewModelScope.launch { japaDao.deleteDay(dayKey, historySources()) }
 
     /** Deletes history according to [range]; today's practice is kept unless EVERYTHING is chosen. */
     fun clearPast(range: ClearRange) = viewModelScope.launch {
         val keep = HistoryPruning.keepFrom(range, LocalDate.now())
-        if (keep == null) japaDao.deleteAll() else japaDao.deleteBefore(DayKeys.of(keep))
+        val sources = historySources()
+        if (keep == null) japaDao.deleteAll(sources) else japaDao.deleteBefore(DayKeys.of(keep), sources)
     }
 
     /** The day Mantra Mala was first installed on this phone (history is kept from then on, for life). */
@@ -174,4 +274,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     fun setFloatingOverlay(on: Boolean) = viewModelScope.launch { repo.setFloatingOverlay(on) }
     fun setFloatingSize(dp: Int) = viewModelScope.launch { repo.setFloatingSize(dp) }
     fun setFloatPosition(x: Float, y: Float) = viewModelScope.launch { repo.setFloatPosition(x, y) }
+    fun setVoicePauseEachMala(on: Boolean) = viewModelScope.launch { repo.setVoicePauseEachMala(on) }
+    fun setVoiceHistory(mode: VoiceHistory) = viewModelScope.launch { repo.setVoiceHistory(mode) }
 }

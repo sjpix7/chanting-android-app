@@ -56,6 +56,8 @@
     <string name="chart_last_7_days">Last 7 days</string>
     <string name="chart_caption">Malas per day · dashed line = daily goal (%1$d)</string>
     <string name="section_record">Japa record</string>
+    <string name="section_by_mantra">By mantra</string>
+    <string name="by_mantra_caption">Lifetime japa for each mantra</string>
     <string name="delete_day_title">Delete this day</string>
     <plurals name="delete_day_message">
         <item quantity="one">%2$s: %1$d mala will be deleted.</item>
@@ -176,4 +178,42 @@
         <item quantity="other">%d malas will be permanently deleted. This cannot be undone.</item>
     </plurals>
     <string name="nothing_to_clear">Nothing to clear for this choice.</string>
+
+    <!-- Voice samples -->
+    <string name="action_done">Done</string>
+    <string name="voice_channel_name">Voice playback</string>
+    <string name="voice_add">Add a voice sample</string>
+    <string name="voice_add_desc">Record or upload this mantra. It plays on repeat and every play is counted.</string>
+    <string name="voice_samples_title">Voice samples</string>
+    <string name="voice_samples_empty">No voice samples for this mantra yet. Record yourself chanting it once, or upload an audio file.</string>
+    <string name="voice_record">Record</string>
+    <string name="voice_upload">Upload</string>
+    <string name="voice_recording">Recording…</string>
+    <string name="voice_record_hint">Chant the mantra once, then tap Stop.</string>
+    <string name="voice_stop">Stop</string>
+    <string name="voice_play">Play</string>
+    <string name="voice_pause">Pause</string>
+    <string name="voice_rerecord">Record again</string>
+    <string name="voice_name">Name</string>
+    <string name="voice_default_name">My recording %1$d</string>
+    <string name="voice_mic_denied">Allow microphone access to record. You can also upload an audio file instead.</string>
+    <string name="voice_record_failed">Nothing was recorded. Please try again.</string>
+    <string name="voice_too_large">This file is too large. Choose one under 50 MB.</string>
+    <string name="voice_unplayable">This file can\'t be played. Try an MP3, M4A, WAV or OGG file.</string>
+    <string name="voice_missing">Recording not found. Please record or upload it again.</string>
+    <string name="voice_count">%1$d / %2$d plays</string>
+    <string name="voice_mala_done">Mala complete · press play to continue</string>
+    <string name="voice_reset">Reset voice count</string>
+    <string name="voice_manage">Manage voice samples</string>
+    <string name="voice_delete_title">Delete voice sample?</string>
+    <string name="voice_delete_message">“%1$s” will be removed from this phone.</string>
+    <string name="setting_voice_pause">Pause after every mala</string>
+    <string name="setting_voice_pause_desc">Stop after 108 plays. Turn off to keep playing and counting.</string>
+    <string name="setting_voice_history">Played malas in history</string>
+    <string name="setting_voice_history_desc">Keep a separate history for malas played from a voice sample, or count them together with chanted malas.</string>
+    <string name="voice_history_merged">Together</string>
+    <string name="voice_history_separate">Separate</string>
+    <string name="history_chanted">Chanted</string>
+    <string name="history_played">Played</string>
+    <string name="history_empty_played">No played malas yet. Add a voice sample on the Japa screen and press play.</string>
 </resources>

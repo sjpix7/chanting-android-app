@@ -9,6 +9,11 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Optional voice samples: record a mantra (asked only when the user taps Record; audio stays on the phone)
+         and keep playing it on repeat with the screen off. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".MantraMalaApp"
@@ -40,6 +45,12 @@
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="Floating japa counter: a small movable bead the user chooses to keep on screen over other apps so they can keep counting mantras; it can be turned off from its notification or in settings." />
         </service>
+
+        <!-- Plays the user's own mantra recording on repeat and counts each play, also with the screen off. -->
+        <service
+            android:name=".voice.VoicePlaybackService"
+            android:exported="false"
+            android:foregroundServiceType="mediaPlayback" />
 
         <!-- Lets AppCompat persist the in-app language choice on Android 12 and below. -->
         <service

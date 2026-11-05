@@ -54,6 +54,8 @@
     <string name="chart_last_7_days">過去 7 日間</string>
     <string name="chart_caption">1日の周数 · 破線 = 1日の目標（%1$d）</string>
     <string name="section_record">ジャパの記録</string>
+    <string name="section_by_mantra">マントラ別</string>
+    <string name="by_mantra_caption">マントラごとの通算ジャパ</string>
     <string name="delete_day_title">この日を削除</string>
     <plurals name="delete_day_message">
         <item quantity="other">%2$s：%1$d 周分の記録を削除します。</item>
@@ -170,4 +172,42 @@
         <item quantity="other">%d 周分の記録が完全に削除されます。この操作は元に戻せません。</item>
     </plurals>
     <string name="nothing_to_clear">この選択では消去する記録がありません。</string>
+
+    <!-- Voice samples -->
+    <string name="action_done">完了</string>
+    <string name="voice_channel_name">音声再生</string>
+    <string name="voice_add">音声サンプルを追加</string>
+    <string name="voice_add_desc">このマントラを録音またはアップロード。繰り返し再生され、再生ごとにカウントされます。</string>
+    <string name="voice_samples_title">音声サンプル</string>
+    <string name="voice_samples_empty">このマントラの音声サンプルはまだありません。一度唱えて録音するか、音声ファイルをアップロードしてください。</string>
+    <string name="voice_record">録音</string>
+    <string name="voice_upload">アップロード</string>
+    <string name="voice_recording">録音中…</string>
+    <string name="voice_record_hint">マントラを一度唱えてから停止をタップします。</string>
+    <string name="voice_stop">停止</string>
+    <string name="voice_play">再生</string>
+    <string name="voice_pause">一時停止</string>
+    <string name="voice_rerecord">録り直す</string>
+    <string name="voice_name">名前</string>
+    <string name="voice_default_name">録音 %1$d</string>
+    <string name="voice_mic_denied">録音するにはマイクへのアクセスを許可してください。音声ファイルをアップロードすることもできます。</string>
+    <string name="voice_record_failed">録音されませんでした。もう一度お試しください。</string>
+    <string name="voice_too_large">ファイルが大きすぎます。50 MB 未満のファイルを選んでください。</string>
+    <string name="voice_unplayable">このファイルは再生できません。MP3、M4A、WAV、OGG を試してください。</string>
+    <string name="voice_missing">録音が見つかりません。もう一度録音またはアップロードしてください。</string>
+    <string name="voice_count">%1$d / %2$d 回</string>
+    <string name="voice_mala_done">マーラー完了 · 再生をタップして続行</string>
+    <string name="voice_reset">音声カウントをリセット</string>
+    <string name="voice_manage">音声サンプルを管理</string>
+    <string name="voice_delete_title">音声サンプルを削除しますか？</string>
+    <string name="voice_delete_message">「%1$s」をこのスマートフォンから削除します。</string>
+    <string name="setting_voice_pause">マーラーごとに一時停止</string>
+    <string name="setting_voice_pause_desc">108 回再生したら停止します。オフにすると再生とカウントを続けます。</string>
+    <string name="setting_voice_history">履歴での再生マーラー</string>
+    <string name="setting_voice_history_desc">音声サンプルで再生したマーラーを別の履歴にするか、唱えたマーラーと一緒に数えます。</string>
+    <string name="voice_history_merged">一緒</string>
+    <string name="voice_history_separate">別々</string>
+    <string name="history_chanted">唱えた</string>
+    <string name="history_played">再生した</string>
+    <string name="history_empty_played">再生したマーラーはまだありません。ジャパ画面で音声サンプルを追加して再生をタップしてください。</string>
 </resources>

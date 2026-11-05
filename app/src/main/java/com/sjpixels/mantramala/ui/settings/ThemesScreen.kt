@@ -87,6 +87,9 @@ import com.sjpixels.mantramala.BuildConfig
 import com.sjpixels.mantramala.R
 import com.sjpixels.mantramala.data.CounterStyle
 import com.sjpixels.mantramala.data.ThemeMode
+import com.sjpixels.mantramala.data.VoiceHistory
+import androidx.compose.material.icons.sharp.History
+import androidx.compose.material.icons.sharp.PauseCircle
 import com.sjpixels.mantramala.ui.MainViewModel
 import com.sjpixels.mantramala.ui.components.BuiltByLink
 import com.sjpixels.mantramala.ui.components.LanguageButton
@@ -230,6 +233,34 @@ fun ThemesScreen(vm: MainViewModel) {
                 ToggleRow(Icons.AutoMirrored.Sharp.VolumeUp, R.string.setting_volume_keys, R.string.setting_volume_keys_desc, s.volumeKeys, vm::setVolumeKeys)
                 Divider()
                 ToggleRow(Icons.Sharp.Smartphone, R.string.setting_keep_screen_on, R.string.setting_keep_screen_on_desc, s.keepScreenOn, vm::setKeepScreenOn)
+            }
+        }
+
+        // ---- Voice playback
+        item { SectionHeader(stringResource(R.string.voice_channel_name)) }
+        item {
+            SharpCard(Modifier.fillMaxWidth(), contentPadding = 0.dp) {
+                ToggleRow(Icons.Sharp.PauseCircle, R.string.setting_voice_pause, R.string.setting_voice_pause_desc, s.voicePauseEachMala, vm::setVoicePauseEachMala)
+                Divider()
+                Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(Icons.Sharp.History, contentDescription = null, tint = scheme.secondary)
+                        Spacer(Modifier.width(14.dp))
+                        Column(Modifier.weight(1f)) {
+                            Text(stringResource(R.string.setting_voice_history), style = MaterialTheme.typography.bodyLarge)
+                            Text(stringResource(R.string.setting_voice_history_desc), style = MaterialTheme.typography.bodySmall, color = scheme.onSurfaceVariant)
+                        }
+                    }
+                    Spacer(Modifier.height(10.dp))
+                    Row(Modifier.fillMaxWidth().padding(start = 38.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        ChoiceChip(stringResource(R.string.voice_history_separate), s.voiceHistory == VoiceHistory.SEPARATE, Modifier.weight(1f)) {
+                            vm.setVoiceHistory(VoiceHistory.SEPARATE)
+                        }
+                        ChoiceChip(stringResource(R.string.voice_history_merged), s.voiceHistory == VoiceHistory.MERGED, Modifier.weight(1f)) {
+                            vm.setVoiceHistory(VoiceHistory.MERGED)
+                        }
+                    }
+                }
             }
         }
 

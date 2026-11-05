@@ -25,6 +25,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sjpixels.mantramala.R
@@ -57,6 +58,7 @@ fun AppRoot(vm: MainViewModel, dark: Boolean) {
         onDispose { view.keepScreenOn = false }
     }
 
+    val resources = LocalResources.current
     LaunchedEffect(Unit) {
         vm.events.collect { e ->
             if (e is UiEvent.RecordDeleted) {
@@ -67,6 +69,9 @@ fun AppRoot(vm: MainViewModel, dark: Boolean) {
                     duration = SnackbarDuration.Short,
                 )
                 if (r == SnackbarResult.ActionPerformed) vm.restoreRecord(e.record)
+            } else if (e is UiEvent.Message) {
+                snackbar.currentSnackbarData?.dismiss()
+                snackbar.showSnackbar(message = resources.getString(e.res), duration = SnackbarDuration.Long)
             }
         }
     }
