@@ -177,7 +177,6 @@
     <string name="action_done">완료</string>
     <string name="voice_channel_name">음성 재생</string>
     <string name="voice_add">음성 샘플 추가</string>
-    <string name="voice_add_desc">이 만트라를 녹음하거나 업로드하세요. 반복 재생되며 매 재생이 카운트됩니다.</string>
     <string name="voice_samples_title">음성 샘플</string>
     <string name="voice_samples_empty">이 만트라의 음성 샘플이 아직 없습니다. 한 번 염송하며 녹음하거나 오디오 파일을 업로드하세요.</string>
     <string name="voice_record">녹음</string>
@@ -210,4 +209,6 @@
     <string name="history_chanted">염송</string>
     <string name="history_played">재생</string>
     <string name="history_empty_played">아직 재생한 말라가 없습니다. 자파 화면에서 음성 샘플을 추가하고 재생을 누르세요.</string>
+    <string name="mantra_show_more">만트라 전체 보기</string>
+    <string name="mantra_show_less">접기</string>
 </resources>

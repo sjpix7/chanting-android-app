@@ -60,7 +60,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
@@ -89,7 +88,6 @@ fun VoiceBar(vm: MainViewModel, mantraTitle: String, modifier: Modifier = Modifi
     val playback by vm.voicePlayback.collectAsStateWithLifecycle()
     val counter by vm.voiceCounter.collectAsStateWithLifecycle()
     val settings by vm.settings.collectAsStateWithLifecycle()
-    val today by vm.voiceTodayMalas.collectAsStateWithLifecycle()
     var managing by rememberSaveable { mutableStateOf(false) }
     val scheme = MaterialTheme.colorScheme
 
@@ -97,61 +95,70 @@ fun VoiceBar(vm: MainViewModel, mantraTitle: String, modifier: Modifier = Modifi
     if (sample == null) {
         Surface(
             onClick = { managing = true },
-            shape = CutCornerShape(topStart = 12.dp, bottomEnd = 12.dp),
+            shape = CutCornerShape(topStart = 10.dp, bottomEnd = 10.dp),
             color = scheme.surfaceContainerHigh,
             border = BorderStroke(1.dp, scheme.outlineVariant),
             modifier = modifier.fillMaxWidth(),
         ) {
-            Row(Modifier.padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(Icons.Sharp.Mic, contentDescription = null, tint = scheme.primary)
-                Spacer(Modifier.width(10.dp))
-                Column(Modifier.weight(1f)) {
-                    Text(stringResource(R.string.voice_add), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = scheme.onSurface)
-                    Text(stringResource(R.string.voice_add_desc), style = MaterialTheme.typography.bodySmall, color = scheme.onSurfaceVariant, maxLines = 2)
-                }
-                Icon(Icons.AutoMirrored.Sharp.KeyboardArrowRight, contentDescription = null, tint = scheme.primary)
+            Row(Modifier.padding(horizontal = 12.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Sharp.Mic, contentDescription = null, tint = scheme.primary, modifier = Modifier.size(20.dp))
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    stringResource(R.string.voice_add),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = scheme.onSurface,
+                    maxLines = 1, overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f),
+                )
+                Icon(Icons.AutoMirrored.Sharp.KeyboardArrowRight, contentDescription = null, tint = scheme.primary, modifier = Modifier.size(20.dp))
             }
         }
     } else {
         val mine = playback.sample?.id == sample.id
         val status = if (mine) playback.status else VoiceStatus.IDLE
         val count = if (counter.mantraKey == sample.mantraKey) counter.count else 0
-        SharpCard(modifier.fillMaxWidth(), contentPadding = 8.dp) {
+        SharpCard(modifier.fillMaxWidth(), contentPadding = 4.dp) {
             Row(verticalAlignment = Alignment.CenterVertically) {
+                Spacer(Modifier.width(2.dp))
                 Surface(
                     onClick = vm::toggleVoice,
                     shape = CircleShape,
                     color = scheme.primary,
                     contentColor = scheme.onPrimary,
-                    modifier = Modifier.size(44.dp),
+                    modifier = Modifier.size(34.dp),
                 ) {
                     Box(contentAlignment = Alignment.Center) {
-                        if (status == VoiceStatus.PLAYING) {
-                            Icon(Icons.Sharp.Pause, contentDescription = stringResource(R.string.voice_pause))
-                        } else {
-                            Icon(Icons.Sharp.PlayArrow, contentDescription = stringResource(R.string.voice_play))
-                        }
+                        val icon = if (status == VoiceStatus.PLAYING) Icons.Sharp.Pause else Icons.Sharp.PlayArrow
+                        val label = stringResource(if (status == VoiceStatus.PLAYING) R.string.voice_pause else R.string.voice_play)
+                        Icon(icon, contentDescription = label, modifier = Modifier.size(20.dp))
                     }
                 }
-                Spacer(Modifier.width(10.dp))
+                Spacer(Modifier.width(8.dp))
                 Column(Modifier.weight(1f).clickable { managing = true }) {
-                    Text(sample.name, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold, color = scheme.onSurface, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    val line = when {
+                    val status2 = when {
                         mine && playback.failed -> stringResource(R.string.voice_missing)
                         mine && playback.pausedAfterMala -> stringResource(R.string.voice_mala_done)
-                        else -> stringResource(R.string.voice_count, count, MALA_SIZE) +
-                            if (today > 0) " · " + pluralStringResource(R.plurals.malas_today, today, today) else ""
+                        else -> stringResource(R.string.voice_count, count, MALA_SIZE)
                     }
-                    Text(
-                        line,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = if (mine && playback.failed) scheme.error else scheme.onSurfaceVariant,
-                        maxLines = 1, overflow = TextOverflow.Ellipsis,
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            sample.name,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = scheme.onSurface,
+                            maxLines = 1, overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false),
+                        )
+                        Text(
+                            "  ·  $status2",
+                            style = MaterialTheme.typography.labelMedium,
+                            color = if (mine && playback.failed) scheme.error else scheme.onSurfaceVariant,
+                            maxLines = 1, overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                     Spacer(Modifier.height(4.dp))
                     LinearProgressIndicator(
                         progress = { count / MALA_SIZE.toFloat() },
-                        modifier = Modifier.fillMaxWidth().height(3.dp),
+                        modifier = Modifier.fillMaxWidth().height(2.dp),
                         color = scheme.primary,
                         trackColor = scheme.outlineVariant,
                         strokeCap = StrokeCap.Butt,
@@ -159,16 +166,21 @@ fun VoiceBar(vm: MainViewModel, mantraTitle: String, modifier: Modifier = Modifi
                     )
                 }
                 if (status != VoiceStatus.IDLE) {
-                    IconButton(onClick = vm::stopVoice) {
-                        Icon(Icons.Sharp.Stop, contentDescription = stringResource(R.string.voice_stop), tint = scheme.onSurfaceVariant)
+                    IconButton(onClick = vm::stopVoice, modifier = Modifier.size(40.dp)) {
+                        Icon(Icons.Sharp.Stop, contentDescription = stringResource(R.string.voice_stop), tint = scheme.onSurfaceVariant, modifier = Modifier.size(20.dp))
                     }
                 } else {
-                    IconButton(onClick = vm::resetVoiceCount, enabled = count > 0) {
-                        Icon(Icons.Sharp.RestartAlt, contentDescription = stringResource(R.string.voice_reset), tint = scheme.onSurfaceVariant.copy(alpha = if (count > 0) 1f else 0.38f))
+                    IconButton(onClick = vm::resetVoiceCount, enabled = count > 0, modifier = Modifier.size(40.dp)) {
+                        Icon(
+                            Icons.Sharp.RestartAlt,
+                            contentDescription = stringResource(R.string.voice_reset),
+                            tint = scheme.onSurfaceVariant.copy(alpha = if (count > 0) 1f else 0.38f),
+                            modifier = Modifier.size(20.dp),
+                        )
                     }
                 }
-                IconButton(onClick = { managing = true }) {
-                    Icon(Icons.Sharp.LibraryMusic, contentDescription = stringResource(R.string.voice_manage), tint = scheme.primary)
+                IconButton(onClick = { managing = true }, modifier = Modifier.size(40.dp)) {
+                    Icon(Icons.Sharp.LibraryMusic, contentDescription = stringResource(R.string.voice_manage), tint = scheme.primary, modifier = Modifier.size(20.dp))
                 }
             }
         }

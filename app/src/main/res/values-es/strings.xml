@@ -189,7 +189,6 @@
     <string name="action_done">Listo</string>
     <string name="voice_channel_name">Reproducción de voz</string>
     <string name="voice_add">Añadir una grabación de voz</string>
-    <string name="voice_add_desc">Graba o sube este mantra. Se reproduce en bucle y cada reproducción se cuenta.</string>
     <string name="voice_samples_title">Grabaciones de voz</string>
     <string name="voice_samples_empty">Este mantra aún no tiene grabaciones. Grábate recitándolo una vez o sube un archivo de audio.</string>
     <string name="voice_record">Grabar</string>
@@ -222,4 +221,6 @@
     <string name="history_chanted">Recitadas</string>
     <string name="history_played">Reproducidas</string>
     <string name="history_empty_played">Aún no hay malas reproducidas. Añade una grabación en la pantalla Japa y toca reproducir.</string>
+    <string name="mantra_show_more">Ver mantra completo</string>
+    <string name="mantra_show_less">Ver menos</string>
 </resources>

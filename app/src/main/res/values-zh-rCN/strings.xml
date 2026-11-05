@@ -177,7 +177,6 @@
     <string name="action_done">完成</string>
     <string name="voice_channel_name">语音播放</string>
     <string name="voice_add">添加语音样本</string>
-    <string name="voice_add_desc">录制或上传这句咒语。它会循环播放，每播放一遍都会计数。</string>
     <string name="voice_samples_title">语音样本</string>
     <string name="voice_samples_empty">这句咒语还没有语音样本。录下自己持诵一遍，或上传一个音频文件。</string>
     <string name="voice_record">录音</string>
@@ -210,4 +209,6 @@
     <string name="history_chanted">持诵</string>
     <string name="history_played">播放</string>
     <string name="history_empty_played">还没有播放的念珠。在持诵页面添加语音样本并点按播放。</string>
+    <string name="mantra_show_more">显示完整咒语</string>
+    <string name="mantra_show_less">收起</string>
 </resources>

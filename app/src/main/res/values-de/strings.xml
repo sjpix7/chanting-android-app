@@ -183,7 +183,6 @@
     <string name="action_done">Fertig</string>
     <string name="voice_channel_name">Sprachwiedergabe</string>
     <string name="voice_add">Sprachaufnahme hinzufügen</string>
-    <string name="voice_add_desc">Nimm dieses Mantra auf oder lade es hoch. Es läuft in Schleife und jede Wiedergabe wird gezählt.</string>
     <string name="voice_samples_title">Sprachaufnahmen</string>
     <string name="voice_samples_empty">Für dieses Mantra gibt es noch keine Aufnahme. Nimm dich einmal beim Rezitieren auf oder lade eine Audiodatei hoch.</string>
     <string name="voice_record">Aufnehmen</string>
@@ -216,4 +215,6 @@
     <string name="history_chanted">Rezitiert</string>
     <string name="history_played">Abgespielt</string>
     <string name="history_empty_played">Noch keine abgespielten Malas. Füge auf dem Japa-Bildschirm eine Sprachaufnahme hinzu und tippe auf Abspielen.</string>
+    <string name="mantra_show_more">Ganzes Mantra anzeigen</string>
+    <string name="mantra_show_less">Weniger anzeigen</string>
 </resources>

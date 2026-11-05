@@ -114,11 +114,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }.flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.Eagerly, PracticeStats())
 
-    /** Malas played from voice samples today (for the voice bar). */
-    val voiceTodayMalas: StateFlow<Int> = combine(records, _today) { all, today ->
-        val key = DayKeys.of(today)
-        all.count { it.isVoice && it.dayKey == key }
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, 0)
 
     fun showVoiceHistory(voice: Boolean) { _historyVoice.value = voice }
 

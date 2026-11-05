@@ -195,7 +195,6 @@
     <string name="action_done">Готово</string>
     <string name="voice_channel_name">Воспроизведение голоса</string>
     <string name="voice_add">Добавить запись голоса</string>
-    <string name="voice_add_desc">Запишите или загрузите эту мантру. Она звучит по кругу, и каждое проигрывание засчитывается.</string>
     <string name="voice_samples_title">Записи голоса</string>
     <string name="voice_samples_empty">Для этой мантры пока нет записей. Запишите, как вы читаете её один раз, или загрузите аудиофайл.</string>
     <string name="voice_record">Записать</string>
@@ -228,4 +227,6 @@
     <string name="history_chanted">Прочитанные</string>
     <string name="history_played">Прослушанные</string>
     <string name="history_empty_played">Прослушанных мал пока нет. Добавьте запись на экране «Джапа» и нажмите «Играть».</string>
+    <string name="mantra_show_more">Показать мантру полностью</string>
+    <string name="mantra_show_less">Свернуть</string>
 </resources>

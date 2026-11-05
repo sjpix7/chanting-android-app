@@ -177,7 +177,6 @@
     <string name="action_done">完了</string>
     <string name="voice_channel_name">音声再生</string>
     <string name="voice_add">音声サンプルを追加</string>
-    <string name="voice_add_desc">このマントラを録音またはアップロード。繰り返し再生され、再生ごとにカウントされます。</string>
     <string name="voice_samples_title">音声サンプル</string>
     <string name="voice_samples_empty">このマントラの音声サンプルはまだありません。一度唱えて録音するか、音声ファイルをアップロードしてください。</string>
     <string name="voice_record">録音</string>
@@ -210,4 +209,6 @@
     <string name="history_chanted">唱えた</string>
     <string name="history_played">再生した</string>
     <string name="history_empty_played">再生したマーラーはまだありません。ジャパ画面で音声サンプルを追加して再生をタップしてください。</string>
+    <string name="mantra_show_more">マントラ全文を表示</string>
+    <string name="mantra_show_less">閉じる</string>
 </resources>

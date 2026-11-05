@@ -189,7 +189,6 @@
     <string name="action_done">Terminé</string>
     <string name="voice_channel_name">Lecture vocale</string>
     <string name="voice_add">Ajouter un enregistrement vocal</string>
-    <string name="voice_add_desc">Enregistrez ou importez ce mantra. Il est lu en boucle et chaque lecture est comptée.</string>
     <string name="voice_samples_title">Enregistrements vocaux</string>
     <string name="voice_samples_empty">Aucun enregistrement pour ce mantra. Enregistrez-vous en le récitant une fois, ou importez un fichier audio.</string>
     <string name="voice_record">Enregistrer</string>
@@ -222,4 +221,6 @@
     <string name="history_chanted">Récités</string>
     <string name="history_played">Écoutés</string>
     <string name="history_empty_played">Aucun mala écouté pour l\'instant. Ajoutez un enregistrement sur l\'écran Japa et appuyez sur lecture.</string>
+    <string name="mantra_show_more">Afficher le mantra entier</string>
+    <string name="mantra_show_less">Afficher moins</string>
 </resources>

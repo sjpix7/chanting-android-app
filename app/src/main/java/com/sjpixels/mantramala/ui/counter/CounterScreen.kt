@@ -37,6 +37,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.sharp.KeyboardArrowRight
 import androidx.compose.material.icons.sharp.Add
+import androidx.compose.material.icons.sharp.ExpandLess
+import androidx.compose.material.icons.sharp.ExpandMore
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.material.icons.sharp.Grain
 import androidx.compose.material.icons.sharp.LocalFireDepartment
 import androidx.compose.material.icons.sharp.Remove
@@ -158,13 +163,13 @@ fun CounterScreen(vm: MainViewModel, onOpenMantras: () -> Unit) {
         } else {
             Column(Modifier.fillMaxSize().padding(horizontal = 16.dp, vertical = 12.dp)) {
                 MantraHeader(mantra, onOpenMantras)
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(6.dp))
                 VoiceBar(vm, mantra?.let { mantraTitle(it) } ?: "")
                 Box(Modifier.weight(1f).fillMaxWidth().padding(vertical = 8.dp), contentAlignment = Alignment.Center) {
                     DialBox(dial)
                 }
                 Controls(onMinus = vm::decrement, onReset = { confirmReset = true }, onPlus = vm::increment, resetEnabled = counter.count > 0)
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(8.dp))
                 StatsRow(stats.todayMalas, settings.dailyGoal, stats.currentStreak, stats.totalMalas, stats.totalJapa + counter.count)
             }
         }
@@ -291,10 +296,20 @@ private fun Dial(
     }
 }
 
+/**
+ * The mantra being chanted. Shows the full Devanagari text (up to 3 lines); tap it, or the arrow,
+ * to expand to the complete text with transliteration and meaning. "Change" opens the library.
+ */
 @Composable
-private fun MantraHeader(mantra: MantraOption?, onClick: () -> Unit) {
+private fun MantraHeader(mantra: MantraOption?, onChange: () -> Unit) {
     val scheme = MaterialTheme.colorScheme
-    SharpCard(modifier = Modifier.fillMaxWidth().clickable(onClick = onClick), contentPadding = 12.dp) {
+    var expanded by rememberSaveable { mutableStateOf(false) }
+    val meaning = mantra?.builtInMeaningRes?.let { stringResource(it) } ?: mantra?.customMeaning?.takeIf { it.isNotBlank() }
+    var overflows by remember(mantra?.key) { mutableStateOf(false) }
+    val canExpand = overflows || mantra?.transliteration != null || meaning != null
+    val toggleLabel = stringResource(if (expanded) R.string.mantra_show_less else R.string.mantra_show_more)
+
+    SharpCard(modifier = Modifier.fillMaxWidth().animateContentSize(), contentPadding = 10.dp) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
                 Text(
@@ -309,21 +324,55 @@ private fun MantraHeader(mantra: MantraOption?, onClick: () -> Unit) {
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
+            }
+            Row(
+                Modifier.clickable(onClick = onChange).padding(start = 8.dp, top = 4.dp, bottom = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(stringResource(R.string.action_change), style = MaterialTheme.typography.labelLarge, color = scheme.primary)
+                Icon(Icons.AutoMirrored.Sharp.KeyboardArrowRight, contentDescription = null, tint = scheme.primary)
+            }
+        }
+        Spacer(Modifier.height(2.dp))
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .clickable(enabled = canExpand, onClickLabel = toggleLabel) { expanded = !expanded },
+            verticalAlignment = Alignment.Bottom,
+        ) {
+            Column(
+                Modifier
+                    .weight(1f)
+                    .then(if (expanded) Modifier.heightIn(max = 240.dp).verticalScroll(rememberScrollState()) else Modifier),
+            ) {
                 Text(
-                    mantra?.text?.lineSequence()?.firstOrNull() ?: "",
+                    mantra?.text ?: "",
                     fontFamily = Devanagari,
                     fontSize = 15.sp,
+                    lineHeight = 22.sp,
                     color = scheme.primary,
-                    maxLines = 1,
+                    maxLines = if (expanded) Int.MAX_VALUE else 3,
                     overflow = TextOverflow.Ellipsis,
+                    onTextLayout = { if (!expanded) overflows = it.hasVisualOverflow },
+                )
+                if (expanded) {
+                    mantra?.transliteration?.let {
+                        Spacer(Modifier.height(4.dp))
+                        Text(it, style = MaterialTheme.typography.bodySmall, fontStyle = FontStyle.Italic, color = scheme.onSurfaceVariant)
+                    }
+                    meaning?.let {
+                        Spacer(Modifier.height(6.dp))
+                        Text(it, style = MaterialTheme.typography.bodyMedium, color = scheme.onSurface.copy(alpha = 0.85f))
+                    }
+                }
+            }
+            if (canExpand) {
+                Icon(
+                    if (expanded) Icons.Sharp.ExpandLess else Icons.Sharp.ExpandMore,
+                    contentDescription = toggleLabel,
+                    tint = scheme.primary,
                 )
             }
-            Text(
-                stringResource(R.string.action_change),
-                style = MaterialTheme.typography.labelLarge,
-                color = scheme.primary,
-            )
-            Icon(Icons.AutoMirrored.Sharp.KeyboardArrowRight, contentDescription = null, tint = scheme.primary)
         }
     }
 }
@@ -335,12 +384,12 @@ private fun Controls(onMinus: () -> Unit, onReset: () -> Unit, onPlus: () -> Uni
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        SharpButton(Icons.Sharp.Remove, stringResource(R.string.action_decrease), onMinus, filled = false, modifier = Modifier.weight(1f))
+        SharpButton(Icons.Sharp.Remove, stringResource(R.string.action_decrease), onMinus, filled = false, modifier = Modifier.weight(1f), height = 36.dp)
         SharpButton(
             Icons.Sharp.RestartAlt, stringResource(R.string.action_reset_round), onReset,
-            filled = false, showLabel = true, enabled = resetEnabled, modifier = Modifier.weight(1.4f),
+            filled = false, showLabel = true, enabled = resetEnabled, modifier = Modifier.weight(1.4f), height = 36.dp,
         )
-        SharpButton(Icons.Sharp.Add, stringResource(R.string.action_increase), onPlus, filled = true, modifier = Modifier.weight(1f))
+        SharpButton(Icons.Sharp.Add, stringResource(R.string.action_increase), onPlus, filled = true, modifier = Modifier.weight(1f), height = 36.dp)
     }
 }
 
@@ -393,14 +442,14 @@ private fun StatsRow(today: Int, goal: Int, streak: Int, totalMalas: Int, totalJ
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         StatTile(
             Icons.Sharp.WbSunny, stringResource(R.string.stat_today), "$today/$goal",
-            progress = (today.toFloat() / goal).coerceIn(0f, 1f), modifier = Modifier.weight(1f),
+            progress = (today.toFloat() / goal).coerceIn(0f, 1f), modifier = Modifier.weight(1f), compact = true,
         )
         StatTile(
             Icons.Sharp.LocalFireDepartment, stringResource(R.string.stat_streak),
-            pluralStringResource(R.plurals.days_short, streak, streak), modifier = Modifier.weight(1f),
+            pluralStringResource(R.plurals.days_short, streak, streak), modifier = Modifier.weight(1f), compact = true,
         )
-        StatTile(Icons.Sharp.Spa, stringResource(R.string.stat_malas), nf.format(totalMalas), modifier = Modifier.weight(1f))
-        StatTile(Icons.Sharp.Grain, stringResource(R.string.stat_japa), compact(totalJapa, nf, locale), modifier = Modifier.weight(1f))
+        StatTile(Icons.Sharp.Spa, stringResource(R.string.stat_malas), nf.format(totalMalas), modifier = Modifier.weight(1f), compact = true)
+        StatTile(Icons.Sharp.Grain, stringResource(R.string.stat_japa), compact(totalJapa, nf, locale), modifier = Modifier.weight(1f), compact = true)
     }
 }
 
@@ -411,19 +460,35 @@ private fun compact(n: Long, nf: NumberFormat, locale: java.util.Locale): String
 }
 
 @Composable
-fun StatTile(icon: ImageVector, label: String, value: String, modifier: Modifier = Modifier, progress: Float? = null) {
+fun StatTile(icon: ImageVector, label: String, value: String, modifier: Modifier = Modifier, progress: Float? = null, compact: Boolean = false) {
     val scheme = MaterialTheme.colorScheme
-    SharpCard(modifier = modifier, contentPadding = 10.dp) {
-        Icon(icon, contentDescription = null, tint = scheme.secondary, modifier = Modifier.size(18.dp))
-        Spacer(Modifier.height(4.dp))
-        Text(
-            value,
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold,
-            color = scheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
+    SharpCard(modifier = modifier, contentPadding = if (compact) 7.dp else 10.dp) {
+        if (compact) {
+            // Icon beside the value: one row shorter, for the Japa screen.
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(icon, contentDescription = null, tint = scheme.secondary, modifier = Modifier.size(14.dp))
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    value,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = scheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        } else {
+            Icon(icon, contentDescription = null, tint = scheme.secondary, modifier = Modifier.size(18.dp))
+            Spacer(Modifier.height(4.dp))
+            Text(
+                value,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = scheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
         Text(
             label,
             style = MaterialTheme.typography.labelSmall,

@@ -183,7 +183,6 @@
     <string name="action_done">हो गया</string>
     <string name="voice_channel_name">आवाज़ प्लेबैक</string>
     <string name="voice_add">आवाज़ नमूना जोड़ें</string>
-    <string name="voice_add_desc">यह मंत्र रिकॉर्ड या अपलोड करें। यह बार-बार चलेगा और हर बार गिना जाएगा।</string>
     <string name="voice_samples_title">आवाज़ नमूने</string>
     <string name="voice_samples_empty">इस मंत्र का अभी कोई आवाज़ नमूना नहीं है। इसे एक बार जपते हुए रिकॉर्ड करें, या कोई ऑडियो फ़ाइल अपलोड करें।</string>
     <string name="voice_record">रिकॉर्ड</string>
@@ -216,4 +215,6 @@
     <string name="history_chanted">जपी गई</string>
     <string name="history_played">सुनी गई</string>
     <string name="history_empty_played">अभी कोई सुनी गई माला नहीं। जप स्क्रीन पर आवाज़ नमूना जोड़ें और चलाएँ दबाएँ।</string>
+    <string name="mantra_show_more">पूरा मंत्र दिखाएँ</string>
+    <string name="mantra_show_less">कम दिखाएँ</string>
 </resources>
