@@ -29,9 +29,10 @@ def text_path(font_path, text, size, wght=700, tracking=2.0):
 
 SLIDES = [
     ("a_japa_light.png", "COUNT EVERY BEAD", ["Tap anywhere on the mala — 108 beads,", "a gentle vibration, a bell at completion"]),
+    ("h_voice_light.png", "VOICE JAPA", ["Record or upload your own chant —", "it plays on repeat and counts every round"]),
     ("b_japa_dark.png", "CHANT BEFORE DAWN", ["Night mode and the Yantra counter", "for your Brahma Muhurta sadhana"]),
     ("c_mantras_light.png", "14 SACRED MANTRAS", ["Sanskrit, transliteration and meaning —", "or add the mantra your guru gave you"]),
-    ("d_history_light.png", "YOUR SADHANA, KEPT", ["Your lifetime record from day one —", "streaks, goals and every mala, on your phone"]),
+    ("d_history_light.png", "YOUR SADHANA, KEPT", ["Your lifetime record from day one —", "streaks, goals and japa for every mantra"]),
     ("e_themes_dark.png", "MAKE IT YOURS", ["9 sacred colour themes · 3 counter styles", "Day and night, one tap away"]),
     ("f_hindi_lotus.png", "YOUR LANGUAGE", ["हिन्दी · English · Русский · Español · Deutsch", "Français · 中文 · 日本語 · 한국어"]),
     ("g_overlay_home.png", "COUNT FROM ANYWHERE", ["A floating bead over any app —", "move it, resize it, colour it your way"]),

@@ -8,7 +8,7 @@ This guide takes you from this repository to a live Play Store listing. Requirem
 |---|---|
 | App targets **Android 16 (API 36)**. Play has required this for new apps since 31 Aug 2026 | `app/build.gradle.kts` |
 | Release build with R8 shrinking, tested on an Android 16 emulator | `./gradlew bundleRelease` |
-| 512 px icon, 1024×500 feature graphic, 7 phone screenshots | `store/` |
+| 512 px icon, 1024×500 feature graphic, 8 phone screenshots | `store/` |
 | Title, short and full description (9 languages) | `store/LISTING.md` |
 | Privacy policy page | `docs/privacy-policy.html` |
 | No internet permission, no ads, no analytics. Permissions: `VIBRATE`, the optional floating-bead ones (`SYSTEM_ALERT_WINDOW`, foreground service "special use", notifications), and the optional voice-sample ones (`RECORD_AUDIO`, foreground service "media playback", `WAKE_LOCK`) | `app/src/main/AndroidManifest.xml` |
@@ -123,7 +123,7 @@ Copy everything from **`store/LISTING.md`**:
 1. App name, short description, full description.
 2. **App icon**: `store/icon-512.png`
 3. **Feature graphic**: `store/feature-graphic-1024x500.png`
-4. **Phone screenshots**: all seven files in `store/screenshots/` (order 01 → 07).
+4. **Phone screenshots**: all eight files in `store/screenshots/` (order 01 → 08).
 5. Optionally upload the same screenshots to the 7-inch and 10-inch tablet slots so the app is shown to tablet users.
 6. *Store settings*: Category **Lifestyle**, tags, contact email (required, public), and optionally a website.
 7. *Manage translations*: add Hindi and the other languages from `store/LISTING.md`. Optional, but it noticeably helps in India and abroad.
@@ -169,7 +169,7 @@ Then *Create new release* → choose the AAB from your library → release notes
 - [ ] `keystore.properties` filled in, `./gradlew bundleRelease` succeeds
 - [ ] Privacy policy edited (name, email) and hosted; URL opens in a browser
 - [ ] App content: privacy, access, ads, rating, audience, data safety, ad ID, gov, financial, health, **foreground service (special use + video)**
-- [ ] Store listing: text, icon, feature graphic, 7 screenshots, category, contact email
+- [ ] Store listing: text, icon, feature graphic, 8 screenshots, category, contact email
 - [ ] Internal test installed and checked on a real phone
 - [ ] Closed test: 12+ testers opted in for 14 consecutive days
 - [ ] Production access approved, then production release sent for review

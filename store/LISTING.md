@@ -9,7 +9,7 @@ Lengths are already checked against Play's limits (title ≤ 30, short descripti
 |---|---|---|
 | App icon | `icon-512.png` | 512 × 512, 32-bit PNG |
 | Feature graphic | `feature-graphic-1024x500.png` | 1024 × 500, 24-bit PNG, no alpha |
-| Phone screenshots (7) | `screenshots/screenshot-01…07.png` | 1080 × 1920 (9:16), no alpha |
+| Phone screenshots (8, Play's maximum) | `screenshots/screenshot-01…08.png` | 1080 × 1920 (9:16), no alpha |
 
 You can reuse the same phone screenshots for **7-inch** and **10-inch tablet** slots if you want the app shown on tablets.
 Sources: `src/icon.svg`, `src/feature-graphic.svg`; regenerate with `tools/assets.py` and `tools/store_screens.py`.
