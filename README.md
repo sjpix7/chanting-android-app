@@ -30,14 +30,14 @@ No server, no account, no ads, no analytics. The app doesn't even request the in
 </p>
 
 <p align="center">
-<img src="store/screenshots/screenshot-01-japa-light.png" width="160" alt="Counter, light mode" title="Counter, light mode">
-<img src="store/screenshots/screenshot-02-voice-light.png" width="160" alt="Voice japa samples" title="Voice japa samples">
-<img src="store/screenshots/screenshot-03-japa-dark.png" width="160" alt="Counter, night mode with Yantra" title="Counter, night mode with Yantra">
-<img src="store/screenshots/screenshot-04-mantras-light.png" width="160" alt="Mantra library" title="Mantra library">
-<img src="store/screenshots/screenshot-05-history-light.png" width="160" alt="Lifetime history" title="Lifetime history">
-<img src="store/screenshots/screenshot-06-themes-dark.png" width="160" alt="Themes and settings" title="Themes and settings">
-<img src="store/screenshots/screenshot-07-hindi-lotus.png" width="160" alt="Hindi, lotus style" title="Hindi, lotus style">
-<img src="store/screenshots/screenshot-08-overlay-home.png" width="160" alt="Floating bead over other apps" title="Floating bead over other apps">
+<img src="store/screenshots/screenshot-01-japa-light.png?v=1.1.1" width="160" alt="Counter, light mode" title="Counter, light mode">
+<img src="store/screenshots/screenshot-02-voice-light.png?v=1.1.1" width="160" alt="Voice japa samples" title="Voice japa samples">
+<img src="store/screenshots/screenshot-03-japa-dark.png?v=1.1.1" width="160" alt="Counter, night mode with Yantra" title="Counter, night mode with Yantra">
+<img src="store/screenshots/screenshot-04-mantras-light.png?v=1.1.1" width="160" alt="Mantra library" title="Mantra library">
+<img src="store/screenshots/screenshot-05-history-light.png?v=1.1.1" width="160" alt="Lifetime history" title="Lifetime history">
+<img src="store/screenshots/screenshot-06-themes-dark.png?v=1.1.1" width="160" alt="Themes and settings" title="Themes and settings">
+<img src="store/screenshots/screenshot-07-hindi-lotus.png?v=1.1.1" width="160" alt="Hindi, lotus style" title="Hindi, lotus style">
+<img src="store/screenshots/screenshot-08-overlay-home.png?v=1.1.1" width="160" alt="Floating bead over other apps" title="Floating bead over other apps">
 </p>
 
 ## ✨ Features
