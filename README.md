@@ -10,6 +10,12 @@ No server, no account, no ads, no analytics. The app doesn't even request the in
 </p>
 
 <p align="center">
+  <a href="https://play.google.com/store/apps/details?id=com.sjpixels.mantramala">
+    <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" height="80">
+  </a>
+</p>
+
+<p align="center">
   <img alt="Android 8.0+" src="https://img.shields.io/badge/Android-8.0%2B-3DDC84?logo=android&logoColor=white">
   <img alt="Target API 36" src="https://img.shields.io/badge/target%20API-36-3DDC84">
   <img alt="Kotlin 2.3" src="https://img.shields.io/badge/Kotlin-2.3-7F52FF?logo=kotlin&logoColor=white">
@@ -90,6 +96,8 @@ export JAVA_HOME=/opt/homebrew/opt/openjdk@17/libexec/openjdk.jdk/Contents/Home
 An emulator is set up as well: `~/Library/Android/sdk/emulator/emulator -avd MantraMala_API36`.
 
 ## 🚀 Publishing
+
+**Live on Google Play:** <https://play.google.com/store/apps/details?id=com.sjpixels.mantramala>
 
 Follow **[docs/PLAY_STORE_LAUNCH.md](docs/PLAY_STORE_LAUNCH.md)**. All store texts are in [store/LISTING.md](store/LISTING.md), graphics are in `store/`, and the privacy policy is in [docs/privacy-policy.html](docs/privacy-policy.html).
 Optional ChatGPT prompts for extra artwork: [docs/CHATGPT_PROMPTS.md](docs/CHATGPT_PROMPTS.md).
